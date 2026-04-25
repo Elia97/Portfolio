@@ -1,0 +1,31 @@
+---
+import { Icon } from "astro-icon/components"
+import { buttonVariants } from "@/lib/button-variants"
+import { useTranslations } from "@/i18n"
+
+const t = useTranslations(Astro.currentLocale ?? "it")
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class={buttonVariants({ variant: "ghost", size: "icon-lg" })}
+  aria-label={t("ui.themeToggle")}
+>
+  <Icon name="moon" class="h-6 w-6 text-foreground dark:hidden" />
+  <Icon name="sun" class="hidden h-6 w-6 text-foreground dark:block" />
+</button>
+
+<script>
+  function setup() {
+    document.getElementById("theme-toggle")?.addEventListener("click", () => {
+      const isDark = document.documentElement.classList.contains("dark")
+      const next = isDark ? "light" : "dark"
+      document.documentElement.classList.toggle("dark", next === "dark")
+      localStorage.setItem("theme", next)
+    })
+  }
+
+  setup()
+  document.addEventListener("astro:after-swap", setup)
+</script>

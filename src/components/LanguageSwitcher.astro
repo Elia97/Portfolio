@@ -1,0 +1,65 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n"
+import { getNavItems } from "@/i18n"
+import { buttonVariants } from "@/lib/button-variants"
+
+const currentLocale = Astro.currentLocale ?? "it"
+const targetLocale = currentLocale === "it" ? "en" : "it"
+const pathname = Astro.url.pathname
+
+const currentItems = getNavItems(currentLocale)
+const targetItems = getNavItems(targetLocale)
+
+let targetUrl = getRelativeLocaleUrl(targetLocale, "/")
+
+for (let i = 0; i < currentItems.length; i++) {
+  const resolved = getRelativeLocaleUrl(currentLocale, currentItems[i].href)
+  const isHome = currentItems[i].href === "/"
+  const matches = isHome ? pathname === resolved : pathname.startsWith(resolved)
+  if (matches) {
+    targetUrl = getRelativeLocaleUrl(targetLocale, targetItems[i].href)
+    break
+  }
+}
+---
+
+<a
+  id="lang-switcher"
+  href={targetUrl}
+  data-target-locale={targetLocale}
+  class={buttonVariants({ variant: "ghost", size: "icon-lg" })}
+  aria-label={`Switch to ${targetLocale.toUpperCase()}`}
+>
+  {targetLocale.toUpperCase()}
+</a>
+
+<script>
+  import { createSignal } from "@/lib/create-signal"
+
+  const refresh = createSignal()
+
+  function setup() {
+    const signal = refresh()
+    const el = document.getElementById(
+      "lang-switcher"
+    ) as HTMLAnchorElement | null
+    el?.addEventListener(
+      "click",
+      () => {
+        localStorage.setItem("locale", el.dataset.targetLocale ?? "")
+        sessionStorage.setItem("restore-focus-lang", "1")
+      },
+      { signal }
+    )
+  }
+
+  setup()
+
+  document.addEventListener("astro:after-swap", () => {
+    setup()
+    if (sessionStorage.getItem("restore-focus-lang")) {
+      sessionStorage.removeItem("restore-focus-lang")
+      document.getElementById("lang-switcher")?.focus()
+    }
+  })
+</script>

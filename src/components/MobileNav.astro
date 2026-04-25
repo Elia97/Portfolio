@@ -1,0 +1,152 @@
+---
+import { Icon } from "astro-icon/components"
+import { getRelativeLocaleUrl } from "astro:i18n"
+import type { NavItem } from "@/i18n/schema"
+import { buttonVariants } from "@/lib/button-variants"
+import { useTranslations } from "@/i18n"
+
+interface Props {
+  items: NavItem[]
+}
+
+const { items } = Astro.props
+const locale = Astro.currentLocale ?? "it"
+const t = useTranslations(locale)
+const pathname = Astro.url.pathname
+
+const resolveHref = (href: string) => getRelativeLocaleUrl(locale, href)
+const isActive = (href: string) => {
+  const resolved = resolveHref(href)
+  return href === "/" ? pathname === resolved : pathname.startsWith(resolved)
+}
+
+const linkStyle =
+  "flex w-full px-6 py-3 text-lg font-medium outline-none transition-colors duration-300 hover:bg-muted hover:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
+---
+
+<div
+  id="mobile-overlay"
+  class="pointer-events-none fixed inset-0 z-40 bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-300"
+  aria-hidden="true"
+>
+</div>
+
+<div
+  id="mobile-drawer"
+  class="fixed inset-y-0 right-0 z-50 w-72 translate-x-full border-l border-border bg-background transition-transform duration-300"
+  inert
+>
+  <div class="flex items-center justify-end p-3">
+    <button
+      id="mobile-close"
+      type="button"
+      class={buttonVariants({ variant: "ghost", size: "icon-lg" })}
+      aria-label={t("ui.closeMenu")}
+    >
+      <Icon name="x" class="h-6 w-6" />
+    </button>
+  </div>
+
+  <nav>
+    <ul>
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={resolveHref(item.href)}
+              class:list={[
+                linkStyle,
+                isActive(item.href) && "border-l-2 border-primary text-primary",
+              ]}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  import { createSignal } from "@/lib/create-signal"
+
+  const refresh = createSignal()
+
+  function setup() {
+    const hamburger = document.getElementById("hamburger")
+    const closeBtn = document.getElementById("mobile-close")
+    const overlay = document.getElementById("mobile-overlay")
+    const drawer = document.getElementById("mobile-drawer")
+
+    if (!hamburger || !closeBtn || !overlay || !drawer) return
+
+    const signal = refresh()
+
+    const ham = hamburger as HTMLElement
+    const ovl = overlay as HTMLElement
+    const drw = drawer as HTMLElement
+
+    const focusableSelector = 'a, button, [tabindex]:not([tabindex="-1"])'
+
+    function trapFocus(e: KeyboardEvent) {
+      if (e.key !== "Tab") return
+      const focusable = Array.from(
+        drw.querySelectorAll<HTMLElement>(focusableSelector)
+      )
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    function open() {
+      drw.classList.remove("translate-x-full")
+      ovl.classList.remove("opacity-0", "pointer-events-none")
+      drw.removeAttribute("inert")
+      ham.setAttribute("aria-expanded", "true")
+      document.body.style.overflow = "hidden"
+      drw.querySelector<HTMLElement>(focusableSelector)?.focus()
+      document.addEventListener("keydown", trapFocus, { signal })
+    }
+
+    function close() {
+      drw.classList.add("translate-x-full")
+      ovl.classList.add("opacity-0", "pointer-events-none")
+      drw.setAttribute("inert", "")
+      ham.setAttribute("aria-expanded", "false")
+      document.body.style.overflow = ""
+      ham.focus()
+    }
+
+    ham.addEventListener("click", open, { signal })
+    closeBtn.addEventListener("click", close, { signal })
+    ovl.addEventListener("click", close, { signal })
+    drw
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", close, { signal }))
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape") close()
+      },
+      { signal }
+    )
+  }
+
+  setup()
+  document.addEventListener("astro:after-swap", () => {
+    document.body.style.overflow = ""
+    setup()
+  })
+</script>

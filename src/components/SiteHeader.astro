@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components"
+import DesktopNav from "./DesktopNav.astro"
+import MobileNav from "./MobileNav.astro"
+import { getNavItems, useTranslations } from "@/i18n"
+import { buttonVariants } from "@/lib/button-variants"
+import ThemeToggle from "./ThemeToggle.astro"
+import LanguageSwitcher from "./LanguageSwitcher.astro"
+
+const locale = Astro.currentLocale ?? "it"
+const navItems = getNavItems(locale)
+const t = useTranslations(locale)
+---
+
+<header class="fixed top-0 right-0 left-0 z-10 h-16 py-3 lg:h-auto 2xl:py-6">
+  <div
+    class="absolute top-1/2 left-6 flex -translate-y-1/2 items-center gap-2 lg:right-6 lg:left-auto"
+  >
+    <ThemeToggle />
+    <LanguageSwitcher />
+  </div>
+
+  <DesktopNav items={navItems} />
+
+  <button
+    id="hamburger"
+    type="button"
+    class:list={[
+      buttonVariants({ variant: "ghost", size: "icon-lg" }),
+      "absolute top-1/2 right-6 -translate-y-1/2 lg:hidden",
+    ]}
+    aria-label={t("ui.openMenu")}
+    aria-expanded="false"
+    aria-controls="mobile-drawer"
+  >
+    <Icon name="menu" class="h-6 w-6" />
+  </button>
+</header>
+
+<MobileNav items={navItems} />
