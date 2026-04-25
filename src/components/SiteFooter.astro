@@ -1,0 +1,112 @@
+---
+import { Icon } from "astro-icon/components"
+import { getRelativeLocaleUrl } from "astro:i18n"
+import { useTranslations, getNavItems } from "@/i18n"
+
+const locale = Astro.currentLocale ?? "it"
+const t = useTranslations(locale)
+const navItems = getNavItems(locale)
+
+const socials = [
+  {
+    href: "https://github.com/Elia97",
+    icon: "github",
+    label: "GitHub",
+  },
+  {
+    href: "https://www.linkedin.com/in/elia-zarantonello-b30aab268/",
+    icon: "linkedin",
+    label: "LinkedIn",
+  },
+  {
+    href: "mailto:email@eliazarantonello.dev",
+    icon: "mail",
+    label: "Email",
+  },
+]
+---
+
+<footer class="space-y-6 px-12 py-6">
+  <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
+    <div class="space-y-4">
+      <h4 class="text-xl font-bold text-pretty sm:text-2xl lg:text-3xl">
+        {t("site.name")}
+      </h4>
+      <p class="max-w-xs text-sm text-muted-foreground">
+        {t("site.description")}
+      </p>
+    </div>
+
+    <div class="space-y-4 md:justify-self-center">
+      <h5 class="text-lg font-bold tracking-wide text-pretty uppercase">
+        {t("footer.navigation")}
+      </h5>
+      <nav>
+        <ul class="flex flex-col gap-3 text-sm">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={getRelativeLocaleUrl(locale, item.href)}
+                  class="text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="space-y-4 md:justify-self-center">
+      <h5 class="text-lg font-bold tracking-wide text-pretty uppercase">
+        {t("footer.connect")}
+      </h5>
+      <div class="flex gap-4">
+        {
+          socials.map(({ href, icon, label }) => (
+            <a
+              href={href}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="border border-muted p-2 transition-all duration-300 hover:border-primary hover:bg-primary/20"
+              aria-label={label}
+            >
+              <Icon name={icon} class="h-5 w-5" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col items-center justify-between gap-4 border-t border-muted pt-8 text-sm sm:flex-row"
+  >
+    <small class="text-center sm:text-left">
+      &copy; {new Date().getFullYear()}
+      {t("site.name")}. {t("footer.copyright")}
+    </small>
+    <small class="text-center sm:text-right">
+      {t("footer.builtWith")}
+      <a
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold text-muted-foreground underline-offset-2 transition-all duration-300 hover:text-foreground hover:underline"
+      >
+        Astro
+      </a>
+      &amp;
+      <a
+        href="https://tailwindcss.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold text-muted-foreground underline-offset-2 transition-all duration-300 hover:text-foreground hover:underline"
+      >
+        Tailwind CSS
+      </a>
+    </small>
+  </div>
+</footer>
