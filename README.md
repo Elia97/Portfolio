@@ -1,36 +1,47 @@
-# Astro + React + TypeScript + shadcn/ui
+# Portfolio — Elia Zarantonello
 
-This is a template for a new Astro project with React, TypeScript, and shadcn/ui.
+Sito portfolio personale. Bilingue (IT/EN), statico, ottimizzato per SEO.
 
-## Adding components
-
-To add components to your app, run the following command:
+## Sviluppo
 
 ```bash
-npx shadcn@latest add button
+pnpm install
+pnpm dev
 ```
 
-This will place the ui components in the `src/components` directory.
+## Comandi
 
-## Using components
-
-To use the components in your app, import them in an `.astro` file:
-
-```astro
----
-import { Button } from "@/components/ui/button"
----
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Astro App</title>
-  </head>
-  <body>
-    <div class="grid h-screen place-items-center content-center">
-      <Button>Button</Button>
-    </div>
-  </body>
-</html>
+```bash
+pnpm dev        # server locale
+pnpm build      # build di produzione
+pnpm preview    # anteprima build
+pnpm typecheck  # type check
+pnpm lint       # eslint
+pnpm format     # prettier
 ```
+
+## Aggiungere contenuto
+
+**Post del blog** — creare un file `.md` o `.mdx` in `src/content/blog/`:
+
+```yaml
+---
+title: "Titolo del post"
+description: "Descrizione breve"
+pubDate: 2024-01-01
+lang: it # oppure en
+tags: [tag1, tag2]
+---
+```
+
+**Componenti UI** — tramite shadcn:
+
+```bash
+pnpm dlx shadcn@latest add <componente>
+```
+
+**Nuove pagine** — creare `.astro` in `src/pages/` (IT) e `src/pages/en/` (EN). Aggiornare `src/i18n/it.ts` e `en.ts` con i metadati della pagina.
+
+## Tech stack
+
+Astro 6 · React 19 · Tailwind CSS 4 · TypeScript · shadcn/ui

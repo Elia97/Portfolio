@@ -2,58 +2,46 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Comandi principali
+## Regole non negoziabili
 
-Usa **pnpm** come package manager.
+**Package manager**: solo `pnpm`.
 
-```bash
-pnpm dev          # Server di sviluppo locale
-pnpm build        # Build di produzione
-pnpm preview      # Anteprima della build di produzione
-pnpm lint         # ESLint
-pnpm format       # Prettier su tutti i file .ts, .tsx, .astro
-pnpm typecheck    # Type check con astro check
+**i18n**: ogni stringa visibile va in `src/i18n/schema.ts` → `it.ts` → `en.ts`. Nessun testo hardcodato nei componenti — inclusi `aria-label`. Usare sempre `t("sezione.chiave")`.
+
+**Styling pulsanti**: usare `buttonVariants()` da `@/lib/button-variants`. Il componente React `Button` non esiste più.
+
+**React**: solo per componenti con stato client-side genuino. Layout e presentazione vanno in Astro puro.
+
+**Event listeners con `astro:after-swap`**: usare `createSignal()` da `@/lib/create-signal` per evitare accumulo di listener tra navigazioni.
+
+**Responsive su icon buttons**: usare `w-*`/`h-*` espliciti — non `size-*`. Tailwind v4 non genera correttamente le varianti responsive di `size-*` nelle stringhe CVA.
+
+**`<a>` stilato come pulsante**: usare `buttonVariants()` direttamente sull'elemento `<a>`. Il pattern `Button` con `asChild` non funziona senza `client:load`.
+
+**Elementi nascosti (drawer, modal)**: usare `inert` — non `aria-hidden`. `inert` impedisce anche il focus sui discendenti, evitando il conflitto che `aria-hidden` crea su elementi con focus attivo.
+
+**CSS globale**: importare `@/styles/global.css` solo in `Head.astro`. Se importato nel layout, Astro non riesce a iniettare il foglio di stile nel `<head>` corretto.
+
+**Script con `astro:after-swap`**: usare `<script>` bundled (non `is:inline`) per poter importare `createSignal`. I tag `is:inline` non supportano import di moduli.
+
+**URL con locale**: usare sempre `getRelativeLocaleUrl(locale, path)` da `astro:i18n`. Non hardcodare mai path con o senza prefisso `/en/`.
+
+**Commit messages**: Conventional Commits. Tipi validi: `feat` `fix` `chore` `docs` `style` `refactor` `perf` `test` `ci` `build` `revert`.
+
+## Stack
+
+- **Astro 6** — static, file-based routing, `prefixDefaultLocale: false` (`it` senza prefisso, `en` → `/en/`)
+- **Tailwind CSS 4** — via `@tailwindcss/vite`, variabili colore OKLch in `global.css`
+- **React 19** — disponibile ma non attualmente usato in produzione
+- **shadcn/ui** — stile `radix-lyra`, baseColor `mist`
+
+## Pattern chiave
+
+```
+src/i18n/schema.ts   → fonte di verità per le traduzioni (Zod)
+src/lib/create-signal.ts  → AbortController riutilizzabile
+src/lib/button-variants.ts → CVA per tutti i pulsanti
+src/components/Head.astro  → unico punto di ingresso per meta, CSS, script globali
 ```
 
-## Stack tecnologico
-
-- **Astro 6** — framework principale con routing file-based (`src/pages/`), MDX, sitemap e astro-icon
-- **React 19** — componenti interattivi (idratati con direttive `client:*`)
-- **Tailwind CSS 4** — styling tramite plugin Vite (`@tailwindcss/vite`)
-- **shadcn/ui** — componenti UI basati su Radix UI (stile `radix-lyra`, baseColor `mist`)
-- **TypeScript** (strict mode, alias `@/*` → `./src/*`)
-- **i18n** — due locali (`it-IT` default senza prefisso, `en-US` con prefisso `/en-US/`)
-
-## Architettura
-
-```
-src/
-  pages/       # Route Astro (file-based routing)
-  layouts/     # Wrapper HTML (main.astro è il layout radice)
-  components/
-    ui/        # Componenti shadcn/ui
-  lib/
-    utils.ts             # Funzione cn() per merge classi Tailwind
-    button-variants.ts   # Varianti CVA per il Button
-  styles/
-    global.css   # Import Tailwind, variabili colore (OKLch), font, dark mode
-```
-
-Le pagine `.astro` importano layout e componenti React. I componenti React vengono idratati lato client con `client:load` (o altre direttive Astro). Non esiste backend: è un sito statico.
-
-## Convenzioni di codice
-
-- Nessun punto e virgola, virgolette doppie, 2 spazi di indentazione (vedi `.prettierrc`)
-- Il dark mode usa `@custom-variant` in `global.css`
-- I colori sono definiti come variabili CSS in formato OKLch nel `:root` e nella variante dark
-- Aggiungere componenti shadcn con: `pnpx shadcn@latest add <component>`
-- Path alias `@/` per tutti gli import da `src/`
-
-## Git workflow
-
-Husky esegue automaticamente questi check a ogni commit:
-
-- **pre-commit**: `lint-staged` (ESLint + Prettier sui file in staging) poi `typecheck`
-- **commit-msg**: commitlint valida il messaggio secondo Conventional Commits
-
-I messaggi di commit devono seguire il formato `<tipo>: <descrizione>`. Tipi accettati: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `build`, `revert`.
+Locali: `it` (default, no prefisso) — `en` (prefisso `/en/`). Nuove pagine EN vanno in `src/pages/en/`.
