@@ -9,6 +9,7 @@ import icon from "astro-icon"
 
 // https://astro.build/config
 export default defineConfig({
+  trailingSlash: "always",
   site: "https://eliazarantonello.dev",
   vite: {
     plugins: [tailwindcss()],
@@ -29,15 +30,15 @@ export default defineConfig({
     mdx(),
     sitemap({
       i18n: {
-        defaultLocale: "it-IT",
-        locales: { "it-IT": "it-IT", "en-US": "en-US" },
+        defaultLocale: "it",
+        locales: { it: "it", en: "en" },
       },
     }),
     icon(),
   ],
   i18n: {
-    defaultLocale: "it-IT",
-    locales: ["it-IT", "en-US"],
+    defaultLocale: "it",
+    locales: ["it", "en"],
     routing: {
       prefixDefaultLocale: false,
     },
