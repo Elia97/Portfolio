@@ -1,10 +1,10 @@
 ---
 import { Icon } from "astro-icon/components"
 import { getRelativeLocaleUrl } from "astro:i18n"
-import { useTranslations, getNavItems } from "@/i18n"
+import { getTranslations, getNavItems } from "@/i18n"
 
 const locale = Astro.currentLocale ?? "it"
-const t = useTranslations(locale)
+const t = getTranslations(locale)
 const navItems = getNavItems(locale)
 
 const socials = [

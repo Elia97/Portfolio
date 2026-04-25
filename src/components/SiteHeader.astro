@@ -2,14 +2,14 @@
 import { Icon } from "astro-icon/components"
 import DesktopNav from "./DesktopNav.astro"
 import MobileNav from "./MobileNav.astro"
-import { getNavItems, useTranslations } from "@/i18n"
+import { getNavItems, getTranslations } from "@/i18n"
 import { buttonVariants } from "@/lib/button-variants"
 import ThemeToggle from "./ThemeToggle.astro"
 import LanguageSwitcher from "./LanguageSwitcher.astro"
 
 const locale = Astro.currentLocale ?? "it"
 const navItems = getNavItems(locale)
-const t = useTranslations(locale)
+const t = getTranslations(locale)
 ---
 
 <header class="fixed top-0 right-0 left-0 z-10 h-16 py-3 lg:h-auto 2xl:py-6">

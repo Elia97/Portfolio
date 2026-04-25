@@ -1,6 +1,6 @@
 ---
 import Head from "@/components/Head.astro"
-import { useTranslations } from "@/i18n"
+import { getTranslations } from "@/i18n"
 
 interface Props {
   title?: string
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const locale = Astro.currentLocale ?? "it"
-const t = useTranslations(locale)
+const t = getTranslations(locale)
 const {
   title,
   description = t("site.description"),
