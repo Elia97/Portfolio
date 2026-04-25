@@ -17,11 +17,12 @@ pnpm typecheck    # Type check con astro check
 
 ## Stack tecnologico
 
-- **Astro 6** — framework principale con routing file-based (`src/pages/`)
+- **Astro 6** — framework principale con routing file-based (`src/pages/`), MDX, sitemap e astro-icon
 - **React 19** — componenti interattivi (idratati con direttive `client:*`)
 - **Tailwind CSS 4** — styling tramite plugin Vite (`@tailwindcss/vite`)
 - **shadcn/ui** — componenti UI basati su Radix UI (stile `radix-lyra`, baseColor `mist`)
 - **TypeScript** (strict mode, alias `@/*` → `./src/*`)
+- **i18n** — due locali (`it-IT` default senza prefisso, `en-US` con prefisso `/en-US/`)
 
 ## Architettura
 
@@ -47,3 +48,12 @@ Le pagine `.astro` importano layout e componenti React. I componenti React vengo
 - I colori sono definiti come variabili CSS in formato OKLch nel `:root` e nella variante dark
 - Aggiungere componenti shadcn con: `pnpx shadcn@latest add <component>`
 - Path alias `@/` per tutti gli import da `src/`
+
+## Git workflow
+
+Husky esegue automaticamente questi check a ogni commit:
+
+- **pre-commit**: `lint-staged` (ESLint + Prettier sui file in staging) poi `typecheck`
+- **commit-msg**: commitlint valida il messaggio secondo Conventional Commits
+
+I messaggi di commit devono seguire il formato `<tipo>: <descrizione>`. Tipi accettati: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `build`, `revert`.
