@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority"
 
 export const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-none border border-transparent bg-clip-padding text-xs font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-none border border-transparent bg-clip-padding text-xs font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 xl:text-sm dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 xl:[&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {
@@ -18,14 +18,17 @@ export const buttonVariants = cva(
       },
       size: {
         default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-none px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-none px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs": "size-6 rounded-none [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-7 rounded-none",
-        "icon-lg": "size-9",
+          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 xl:h-9 xl:gap-2 xl:px-3 xl:has-data-[icon=inline-end]:pr-3 xl:has-data-[icon=inline-start]:pl-3 2xl:h-10 2xl:gap-2.5 2xl:px-3.5 2xl:has-data-[icon=inline-end]:pr-3.5 2xl:has-data-[icon=inline-start]:pl-3.5",
+        xs: "h-6 gap-1 rounded-none px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 xl:h-7 xl:gap-1.5 xl:px-2.5 xl:has-data-[icon=inline-end]:pr-2 xl:has-data-[icon=inline-start]:pl-2 2xl:h-8 2xl:gap-2 2xl:px-3 2xl:has-data-[icon=inline-end]:pr-2.5 2xl:has-data-[icon=inline-start]:pl-2.5 [&_svg:not([class*='size-'])]:size-3 xl:[&_svg:not([class*='size-'])]:size-3.5 2xl:[&_svg:not([class*='size-'])]:size-4",
+        sm: "h-7 gap-1 rounded-none px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 xl:h-8 xl:gap-1.5 xl:px-3 xl:has-data-[icon=inline-end]:pr-2 xl:has-data-[icon=inline-start]:pl-2 2xl:h-9 2xl:gap-2 2xl:px-3.5 2xl:has-data-[icon=inline-end]:pr-2.5 2xl:has-data-[icon=inline-start]:pl-2.5 [&_svg:not([class*='size-'])]:size-3.5 xl:[&_svg:not([class*='size-'])]:size-4",
+        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 xl:h-10 xl:gap-2 xl:px-3 xl:has-data-[icon=inline-end]:pr-3 xl:has-data-[icon=inline-start]:pl-3 2xl:h-11 2xl:gap-2.5 2xl:px-4 2xl:has-data-[icon=inline-end]:pr-3.5 2xl:has-data-[icon=inline-start]:pl-3.5",
+        icon: "h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 xl:h-11 xl:w-11 2xl:h-12 2xl:w-12",
+        "icon-xs":
+          "h-6 w-6 rounded-none md:h-7 md:w-7 lg:h-8 lg:w-8 xl:h-9 xl:w-9 2xl:h-10 2xl:w-10 [&_svg:not([class*='size-'])]:size-3 lg:[&_svg:not([class*='size-'])]:size-3.5 xl:[&_svg:not([class*='size-'])]:size-4",
+        "icon-sm":
+          "h-7 w-7 rounded-none md:h-8 md:w-8 lg:h-9 lg:w-9 xl:h-10 xl:w-10 2xl:h-11 2xl:w-11",
+        "icon-lg":
+          "h-9 w-9 md:h-10 md:w-10 lg:h-11 lg:w-11 xl:h-12 xl:w-12 2xl:h-13 2xl:w-13",
       },
     },
     defaultVariants: {
