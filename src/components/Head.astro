@@ -1,0 +1,152 @@
+---
+import "@/styles/global.css"
+import { ClientRouter } from "astro:transitions"
+import { useTranslations } from "@/i18n"
+
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  noindex?: boolean
+  article?: boolean
+  locale?: string
+}
+
+const {
+  title,
+  description,
+  image = "/og.png",
+  noindex = false,
+  article = false,
+  locale = "it",
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+
+const siteTitle = useTranslations(locale)("site.name")
+const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle
+const imageURL = new URL(image, Astro.site)
+
+const author = {
+  "@type": "Person",
+  name: siteTitle,
+  url: Astro.site,
+}
+
+const structuredData = article
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: pageTitle,
+      description,
+      image: imageURL,
+      url: canonicalURL,
+      inLanguage: locale,
+      author,
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: siteTitle,
+      description,
+      url: Astro.site,
+      inLanguage: locale,
+      author,
+    }
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="canonical" href={canonicalURL} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content={siteTitle} />
+
+  <meta property="og:type" content={article ? "article" : "website"} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={imageURL} />
+  <meta property="og:site_name" content={siteTitle} />
+  <meta property="og:locale" content={locale} />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imageURL} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta
+    name="theme-color"
+    content="#ffffff"
+    media="(prefers-color-scheme: light)"
+  />
+  <meta
+    name="theme-color"
+    content="#090b0c"
+    media="(prefers-color-scheme: dark)"
+  />
+
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    title={`Blog RSS | ${siteTitle}`}
+    href="/rss.xml"
+  />
+
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+  />
+
+  <ClientRouter />
+
+  <script is:inline>
+    const getTheme = () => {
+      if (
+        typeof localStorage !== "undefined" &&
+        localStorage.getItem("theme")
+      ) {
+        return localStorage.getItem("theme")
+      }
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark"
+      }
+      return "light"
+    }
+
+    const setTheme = (theme) => {
+      if (theme === "light") {
+        document.documentElement.classList.remove("dark")
+      } else {
+        document.documentElement.classList.add("dark")
+      }
+      window.localStorage.setItem("theme", theme)
+    }
+
+    setTheme(getTheme())
+
+    document.addEventListener("astro:after-swap", () => setTheme(getTheme()))
+
+    const savedLocale = localStorage.getItem("locale")
+    const currentLocale = document.documentElement.lang
+    if (savedLocale && savedLocale !== currentLocale) {
+      const path = window.location.pathname
+      if (path === "/" && savedLocale === "en") {
+        window.location.replace("/en/")
+      } else if (path === "/en/" && savedLocale === "it") {
+        window.location.replace("/")
+      }
+    }
+  </script>
+</head>
