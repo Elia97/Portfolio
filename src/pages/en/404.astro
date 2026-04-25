@@ -1,0 +1,39 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n"
+import Layout from "@/layouts/main.astro"
+import { buttonVariants } from "@/lib/button-variants"
+import { getTranslations } from "@/i18n"
+
+const locale = Astro.currentLocale ?? "en"
+const t = getTranslations(locale)
+---
+
+<Layout title="404" description={t("notFound.title")}>
+  <body>
+    <main
+      class="flex min-h-svh flex-col items-center justify-center gap-6 2xl:gap-10"
+    >
+      <p
+        aria-hidden="true"
+        class="text-5xl lg:text-6xl xl:text-7xl 2xl:text-9xl"
+      >
+        404
+      </p>
+      <p
+        class="text-lg text-muted-foreground lg:text-xl xl:text-2xl 2xl:text-5xl"
+      >
+        {t("notFound.title")}
+      </p>
+      <a
+        href={getRelativeLocaleUrl(locale, "/")}
+        class={buttonVariants({
+          variant: "link",
+          size: "lg",
+          className: "mt-3 lg:text-base xl:text-lg 2xl:mt-5 2xl:text-3xl",
+        })}
+      >
+        {t("notFound.cta")}
+      </a>
+    </main>
+  </body>
+</Layout>

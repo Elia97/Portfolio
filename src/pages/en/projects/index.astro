@@ -3,15 +3,15 @@ import Layout from "@/layouts/website.astro"
 import { getTranslations } from "@/i18n"
 import { fade } from "astro:transitions"
 
-const locale = Astro.currentLocale ?? "it"
+const locale = Astro.currentLocale ?? "en"
 const t = getTranslations(locale)
 ---
 
 <Layout
-  title={t("pages.index.title")}
-  description={t("pages.index.description")}
+  title={t("pages.projects.title")}
+  description={t("pages.projects.description")}
 >
   <section class="section" transition:animate={fade({ duration: "0.5s" })}>
-    <h1 class="heading">Home</h1>
+    <h1 class="heading">Projects</h1>
   </section>
 </Layout>
