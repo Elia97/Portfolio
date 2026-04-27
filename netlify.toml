@@ -1,0 +1,99 @@
+# ── Build ────────────────────────────────────────────────────────────────────
+
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION  = "22"
+  PNPM_VERSION  = "10"
+
+# ── Contesti ──────────────────────────────────────────────────────────────────
+# Deploy preview: build identica alla produzione, senza plugin Lighthouse
+
+[context.deploy-preview]
+  command = "pnpm build"
+
+[context.branch-deploy]
+  command = "pnpm build"
+
+# ── Headers ───────────────────────────────────────────────────────────────────
+
+# Sicurezza su tutte le pagine
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options              = "DENY"
+    X-Content-Type-Options       = "nosniff"
+    X-XSS-Protection             = "1; mode=block"
+    Referrer-Policy              = "strict-origin-when-cross-origin"
+    Permissions-Policy           = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security    = "max-age=63072000; includeSubDomains; preload"
+
+# Asset Astro: nome file già hashato → cache immutabile 1 anno
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Font fontsource: già inclusi in /_astro/, ma per sicurezza
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML: nessuna cache — sempre fresco
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Sitemap, robots, RSS: fresco ogni ora
+[[headers]]
+  for = "/sitemap*.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/rss.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# ── Redirects ─────────────────────────────────────────────────────────────────
+
+# Normalizzazione trailing slash (Astro la gestisce, Netlify ne è consapevole)
+[[redirects]]
+  from   = "/:path"
+  to     = "/:path/"
+  status = 301
+  force  = false
+  conditions = { Cookie = [] }
+
+# ── Plugin ────────────────────────────────────────────────────────────────────
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs]
+  output_path = "reports/lighthouse.html"
+
+  # Pagine da auditare ad ogni deploy in produzione
+  [[plugins.inputs.audits]]
+  path = "/"
+
+  [[plugins.inputs.audits]]
+  path = "/en/"
+
+  [[plugins.inputs.audits]]
+  path = "/blog/"
+
+  [[plugins.inputs.audits]]
+  path = "/progetti/"
+
+  [[plugins.inputs.audits]]
+  path = "/chi-sono/"
