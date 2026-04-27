@@ -19,6 +19,10 @@ export function getNavItems(locale: string): NavItem[] {
   return Object.values(dict.nav)
 }
 
+export function getTranslationDict(locale: string): Translations {
+  return translations[locale as Locale] ?? translations.it
+}
+
 export function getTranslations(locale: string) {
   const dict = translations[locale as Locale] ?? translations.it
 
