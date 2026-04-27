@@ -1,5 +1,6 @@
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { TextPlugin } from "gsap/TextPlugin"
 
 class GsapEngine {
   private initialized = false
@@ -26,7 +27,7 @@ class GsapEngine {
   private init() {
     if (this.initialized) return
 
-    this.gsap.registerPlugin(ScrollTrigger)
+    this.gsap.registerPlugin(ScrollTrigger, TextPlugin)
 
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
     this._reduceMotion = mq.matches

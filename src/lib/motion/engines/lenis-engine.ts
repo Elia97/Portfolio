@@ -1,7 +1,6 @@
 import Lenis from "lenis"
 import { scrollEngine } from "./scroll-engine"
 import { gsapEngine } from "./gsap-engine"
-import { BREAKPOINT_LG } from "../presets"
 
 class LenisEngine {
   private static instance: LenisEngine
@@ -21,7 +20,7 @@ class LenisEngine {
   public safeInit() {
     if (typeof window === "undefined") return
 
-    this.mq = window.matchMedia(`(min-width: ${BREAKPOINT_LG}px)`)
+    this.mq = window.matchMedia("(pointer: fine)")
 
     this.mqHandler = (e) => {
       if (e.matches && !this.initialized) {

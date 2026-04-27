@@ -10,11 +10,19 @@ export class ParticleNetwork {
   private connectionDistance = 150
   private mouseDistance = 200
   private animationId: number | null = null
+  private colorInner: string
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, primaryColor?: string) {
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
     this.particleCount = document.documentElement.clientWidth < 768 ? 50 : 100
+
+    const raw =
+      primaryColor ??
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--primary")
+        .trim()
+    this.colorInner = raw.replace(/^oklch\(|\)$/g, "").trim()
 
     this.init()
     this.bindEvents()
@@ -26,29 +34,29 @@ export class ParticleNetwork {
     this.initParticles()
   }
 
-  private bindEvents() {
-    window.addEventListener("resize", () => this.resize())
-
-    window.addEventListener("mousemove", (e) => {
-      // Disable mouse interaction on touch devices
-      if (window.matchMedia("(pointer: coarse)").matches) return
-
-      const rect = this.canvas.getBoundingClientRect()
-      this.mouse.x = e.clientX - rect.left
-      this.mouse.y = e.clientY - rect.top
-    })
-
-    window.addEventListener("mouseleave", () => {
+  private onResize = () => this.resize()
+  private onMouseMove = (e: MouseEvent) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return
+    const rect = this.canvas.getBoundingClientRect()
+    this.mouse.x = e.clientX - rect.left
+    this.mouse.y = e.clientY - rect.top
+  }
+  private onMouseLeave = () => {
+    this.mouse.x = null
+    this.mouse.y = null
+  }
+  private onMouseOut = (e: MouseEvent) => {
+    if (!e.relatedTarget) {
       this.mouse.x = null
       this.mouse.y = null
-    })
+    }
+  }
 
-    window.addEventListener("mouseout", (e) => {
-      if (!e.relatedTarget) {
-        this.mouse.x = null
-        this.mouse.y = null
-      }
-    })
+  private bindEvents() {
+    window.addEventListener("resize", this.onResize)
+    window.addEventListener("mousemove", this.onMouseMove)
+    window.addEventListener("mouseleave", this.onMouseLeave)
+    window.addEventListener("mouseout", this.onMouseOut)
   }
 
   private resize() {
@@ -74,7 +82,9 @@ export class ParticleNetwork {
   private initParticles() {
     this.particles = []
     for (let i = 0; i < this.particleCount; i++) {
-      this.particles.push(new Particle(this.width, this.height))
+      this.particles.push(
+        new Particle(this.width, this.height, this.colorInner)
+      )
     }
 
     this.wanderingTarget = {
@@ -153,10 +163,9 @@ export class ParticleNetwork {
         const distance = Math.sqrt(dx * dx + dy * dy)
 
         if (distance < this.connectionDistance) {
+          const alpha = (1 - distance / this.connectionDistance).toFixed(3)
           this.ctx.beginPath()
-          this.ctx.strokeStyle = `rgba(59, 130, 246, ${
-            1 - distance / this.connectionDistance
-          })`
+          this.ctx.strokeStyle = `oklch(${this.colorInner} / ${alpha})`
           this.ctx.lineWidth = 1
           this.ctx.moveTo(this.particles[i].x, this.particles[i].y)
           this.ctx.lineTo(this.particles[j].x, this.particles[j].y)
@@ -171,10 +180,9 @@ export class ParticleNetwork {
         const dy = this.particles[i].y - my
         const distance = Math.sqrt(dx * dx + dy * dy)
         if (distance < this.connectionDistance) {
+          const alpha = (1 - distance / this.connectionDistance).toFixed(3)
           this.ctx.beginPath()
-          this.ctx.strokeStyle = `rgba(59, 130, 246, ${
-            1 - distance / this.connectionDistance
-          })`
+          this.ctx.strokeStyle = `oklch(${this.colorInner} / ${alpha})`
           this.ctx.lineWidth = 1
           this.ctx.moveTo(this.particles[i].x, this.particles[i].y)
           this.ctx.lineTo(mx, my)
@@ -186,9 +194,11 @@ export class ParticleNetwork {
   }
 
   public destroy() {
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId)
-    }
+    if (this.animationId) cancelAnimationFrame(this.animationId)
+    window.removeEventListener("resize", this.onResize)
+    window.removeEventListener("mousemove", this.onMouseMove)
+    window.removeEventListener("mouseleave", this.onMouseLeave)
+    window.removeEventListener("mouseout", this.onMouseOut)
   }
 }
 
@@ -200,13 +210,13 @@ class Particle {
   size: number
   color: string
 
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, colorInner: string) {
     this.x = Math.random() * width
     this.y = Math.random() * height
     this.vx = (Math.random() - 0.5) * 0.2
     this.vy = (Math.random() - 0.5) * 0.2
     this.size = Math.random() * 2 + 1
-    this.color = "rgba(59, 130, 246, 0.5)"
+    this.color = `oklch(${colorInner} / 0.6)`
   }
 
   update(
