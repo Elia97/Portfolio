@@ -1,0 +1,73 @@
+---
+import CodeLine from "@/components/CodeLine.astro"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["about"]["codeViewer"]
+---
+
+<div class="ml-4">
+  <CodeLine><span class="text-syntax-punctuation">[</span></CodeLine>
+  {
+    Astro.props.interests.map((interest, index, arr) => {
+      const sentences = interest.description
+        .split(/(?<=\.)\s+/)
+        .filter((s) => s.length > 0)
+
+      return (
+        <div class="ml-4">
+          <CodeLine>
+            <span class="text-syntax-punctuation">{`{`}</span>
+          </CodeLine>
+          <div class="ml-4">
+            <CodeLine>
+              <>
+                <span class="text-syntax-variable">title</span>
+                <span>:</span>
+              </>
+              <>
+                <span class="ml-2 text-syntax-punctuation">"</span>
+                <span class="text-syntax-string">{interest.title}</span>
+                <span class="text-syntax-punctuation">"</span>
+                <span>,</span>
+              </>
+            </CodeLine>
+            {sentences.length <= 1 ? (
+              <CodeLine>
+                <span class="text-syntax-variable">description</span>
+                <span>:</span>
+                <span class="ml-2 text-syntax-punctuation">"</span>
+                <span class="text-syntax-string">{interest.description}</span>
+                <span class="text-syntax-punctuation">"</span>
+              </CodeLine>
+            ) : (
+              <>
+                <CodeLine>
+                  <span class="text-syntax-variable">description</span>
+                  <span>:</span>
+                </CodeLine>
+                <div class="ml-4">
+                  {sentences.map((sentence, sIdx) => (
+                    <CodeLine>
+                      {sIdx === 0 && (
+                        <span class="text-syntax-punctuation">"</span>
+                      )}
+                      <span class="text-syntax-string">{sentence}</span>
+                      {sIdx === sentences.length - 1 && (
+                        <span class="text-syntax-punctuation">"</span>
+                      )}
+                    </CodeLine>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          <CodeLine>
+            <span class="text-syntax-punctuation">{`}`}</span>
+            {index < arr.length - 1 && <span>,</span>}
+          </CodeLine>
+        </div>
+      )
+    })
+  }
+  <CodeLine><span class="text-syntax-punctuation">]</span></CodeLine>
+</div>

@@ -1,17 +1,36 @@
 ---
 import Layout from "@/layouts/website.astro"
-import { getTranslations } from "@/i18n"
-import { fade } from "astro:transitions"
+import { getTranslations, getTranslationDict } from "@/i18n"
+import Section from "@/components/Section.astro"
+import Heading from "@/components/Heading.astro"
+import HeaderEffect from "@/components/HeaderEffect.astro"
+import ProjectsGrid from "@/components/sections/projects/ProjectsGrid.astro"
+import { motion } from "viewmotion"
 
 const locale = Astro.currentLocale ?? "en"
 const t = getTranslations(locale)
+const dict = getTranslationDict(locale)
 ---
 
 <Layout
-  title={t("pages.projects.title")}
-  description={t("pages.projects.description")}
+  title={t("projects.meta.title")}
+  description={t("projects.meta.description")}
 >
-  <section class="section" transition:animate={fade({ duration: "0.5s" })}>
-    <h1 class="heading">Projects</h1>
-  </section>
+  <HeaderEffect />
+  <Section class="lg:px-12">
+    <Heading
+      level="h1"
+      heading={t("projects.meta.title")}
+      description={t("projects.meta.description")}
+      class="my-12 2xl:my-24"
+      headingAttrs={{ ...motion({ preset: "fade-up", delay: 100 }) }}
+      descriptionAttrs={{ ...motion({ preset: "fade-up", delay: 300 }) }}
+    />
+    <div {...motion({ preset: "fade-up", delay: 500 })}>
+      <ProjectsGrid
+        items={dict.projects.items}
+        ctaLabel={dict.projects.ctaLabel}
+      />
+    </div>
+  </Section>
 </Layout>

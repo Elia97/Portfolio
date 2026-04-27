@@ -1,0 +1,121 @@
+---
+import { Icon } from "astro-icon/components"
+import { getRelativeLocaleUrl } from "astro:i18n"
+import type { Translations } from "@/i18n/schema"
+
+type ProjectItem = Translations["projects"]["items"][number]
+
+interface Props {
+  project: ProjectItem
+  ctaLabel: string
+}
+
+const { project, ctaLabel } = Astro.props
+const locale = Astro.currentLocale ?? "it"
+
+const linkHref = getRelativeLocaleUrl(
+  locale,
+  `${locale === "it" ? "progetti" : "projects"}/${project.slug}`
+)
+
+const yearShort = project.year.slice(-2)
+---
+
+<article
+  data-project-card
+  class="group relative flex translate-y-[30px] flex-col gap-5 overflow-hidden border border-border bg-muted/20 p-6 opacity-0 transition-[background-color,border-color] duration-500 hover:border-primary/30 hover:bg-primary/[0.03] lg:p-8"
+>
+  <div
+    class="absolute inset-y-0 left-0 w-0.5 origin-top scale-y-0 bg-primary transition-transform duration-500 group-hover:scale-y-100"
+  >
+  </div>
+
+  <span
+    aria-hidden="true"
+    class="pointer-events-none absolute top-4 right-5 font-heading text-6xl leading-none font-bold text-foreground/[0.05] transition-colors duration-500 select-none group-hover:text-primary/[0.08] lg:text-7xl"
+  >
+    {yearShort}
+  </span>
+
+  <div class="space-y-1.5">
+    <h3
+      class="font-heading text-xl font-bold tracking-tight transition-colors duration-300 group-hover:text-primary sm:text-2xl lg:text-3xl"
+    >
+      <a
+        href={linkHref}
+        class="after:absolute after:inset-0 focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none"
+      >
+        {project.title}
+      </a>
+    </h3>
+    <p class="font-mono text-sm text-muted-foreground">
+      {project.subtitle}
+    </p>
+  </div>
+
+  <p
+    class="line-clamp-2 text-sm leading-relaxed text-muted-foreground lg:text-base"
+  >
+    {project.problem.body}
+  </p>
+
+  <p class="font-mono text-xs text-muted-foreground/70">
+    {project.technologies.slice(0, 5).join(" · ")}
+    {project.technologies.length > 5 && ` +${project.technologies.length - 5}`}
+  </p>
+
+  <div
+    class="relative z-10 mt-auto flex items-center justify-between border-t border-border pt-5 transition-colors duration-500 group-hover:border-primary/20"
+  >
+    <div class="flex items-center gap-3">
+      {
+        project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            class="text-muted-foreground/50 transition-colors duration-200 hover:text-foreground"
+          >
+            <Icon name="github" class="h-4 w-4" />
+          </a>
+        )
+      }
+      {
+        project.npmUrl && (
+          <a
+            href={project.npmUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="npm"
+            class="text-muted-foreground/50 transition-colors duration-200 hover:text-foreground"
+          >
+            <Icon name="npm" class="h-4 w-4" />
+          </a>
+        )
+      }
+    </div>
+
+    <div
+      class="flex items-center gap-1.5 text-xs font-medium transition-colors duration-300 group-hover:text-primary"
+    >
+      <span>{ctaLabel}</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="transition-transform duration-300 group-hover:translate-x-1"
+      >
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </div>
+  </div>
+</article>

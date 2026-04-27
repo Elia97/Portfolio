@@ -1,0 +1,59 @@
+---
+import { Icon } from "astro-icon/components"
+import Heading from "@/components/Heading.astro"
+import { motion } from "viewmotion"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["contact"]["info"]
+
+const { heading, description, location, githubLabel, linkedinLabel } =
+  Astro.props
+---
+
+<div data-contact-info class="space-y-12 lg:px-6">
+  <Heading
+    level="h1"
+    heading={heading}
+    description={description}
+    headingAttrs={{
+      ...motion({ preset: "fade-up", delay: 100 }),
+    }}
+    descriptionAttrs={{
+      ...motion({ preset: "fade-up", delay: 300 }),
+    }}
+  />
+
+  <div
+    {...motion({ preset: "fade-up", delay: 500 })}
+    class="mt-12 flex flex-wrap items-center justify-between gap-6"
+  >
+    <div
+      class="contact-item flex items-center justify-center space-x-3 text-muted-foreground md:text-lg lg:justify-start"
+    >
+      <Icon name="map" />
+      <span class="font-mono">{location}</span>
+    </div>
+
+    <div class="contact-item flex justify-center gap-4 lg:justify-start">
+      <a
+        href="https://github.com/Elia97"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={githubLabel}
+        class="transition-colors hover:text-primary"
+      >
+        <Icon name="github" class="h-10 w-10 lg:h-12 lg:w-12" />
+      </a>
+
+      <a
+        href="https://www.linkedin.com/in/elia-zarantonello-b30aab268/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={linkedinLabel}
+        class="transition-colors hover:text-primary"
+      >
+        <Icon name="linkedin" class="h-10 w-10 lg:h-12 lg:w-12" />
+      </a>
+    </div>
+  </div>
+</div>

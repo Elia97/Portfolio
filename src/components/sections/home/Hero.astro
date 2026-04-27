@@ -1,0 +1,81 @@
+---
+import { buttonVariants } from "@/lib/button-variants"
+import { motion } from "viewmotion"
+import type { Translations } from "@/i18n/schema"
+import Heading from "@/components/Heading.astro"
+import Section from "@/components/Section.astro"
+
+type Props = Translations["home"]["hero"]
+---
+
+<Section align="center" class="gap-6" data-hero-section>
+  <canvas
+    data-hero-canvas
+    {...motion({ preset: "blur-in", delay: 800 })}
+    class="pointer-events-none absolute inset-0 -z-10 opacity-100"></canvas>
+  {
+    Astro.props.badge && (
+      <div
+        data-hero-badge
+        {...motion({ preset: "fade-down", delay: 0 })}
+        class="mb-6 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary sm:text-sm"
+      >
+        {Astro.props.badge}
+      </div>
+    )
+  }
+  <Heading
+    level="h1"
+    heading={Astro.props.heading}
+    description={Astro.props.description}
+    align="center"
+    headingAttrs={{
+      ...motion({ preset: "fade-up", delay: 100 }),
+    }}
+    descriptionAttrs={{
+      ...motion({ preset: "fade-up", delay: 300 }),
+      class: "text-center ",
+    }}
+  />
+
+  <div
+    data-hero-buttons
+    {...motion({ preset: "fade-up", delay: 500 })}
+    class="flex items-center gap-3"
+  >
+    {
+      Astro.props.buttons.map((button, index) => (
+        <a
+          href={button.href}
+          class:list={buttonVariants({
+            variant: index % 2 === 0 ? "default" : "outline",
+            size: "lg",
+          })}
+          data-hero-cta
+        >
+          {button.text}
+        </a>
+      ))
+    }
+  </div>
+
+  {
+    Astro.props.title && (
+      <div
+        data-hero-typewriter
+        {...motion({ preset: "fade-up", delay: 700 })}
+        class="mx-auto mt-6 flex min-h-[1.5em] max-w-xs items-center justify-center text-center text-lg font-medium sm:max-w-md sm:text-xl lg:max-w-lg lg:text-2xl"
+      >
+        <span>{Astro.props.title}</span>
+        <span
+          data-hero-cursor
+          class="ml-1 hidden h-[0.8em] w-px bg-foreground"
+        />
+      </div>
+    )
+  }
+</Section>
+
+<script>
+  import "@/components/sections/home/scripts/hero.motion"
+</script>

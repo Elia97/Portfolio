@@ -1,0 +1,119 @@
+---
+import CodeLine from "@/components/CodeLine.astro"
+import Heading from "@/components/Heading.astro"
+import Section from "@/components/Section.astro"
+import BeyondCode from "./BeyondCode.astro"
+import Skills from "./Skills.astro"
+import { motion } from "viewmotion"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["about"]["codeViewer"]
+---
+
+<Section data-codeviewer-section class="lg:px-12">
+  <Heading
+    level="h1"
+    heading={Astro.props.heading}
+    description={Astro.props.description}
+    class="my-12 2xl:my-24"
+    headingAttrs={{
+      ...motion({ preset: "fade-up", delay: 100 }),
+    }}
+    descriptionAttrs={{
+      ...motion({ preset: "fade-up", delay: 300 }),
+    }}
+  />
+
+  <div
+    data-codeviewer-viewer
+    {...motion({ preset: "fade-up" })}
+    class="relative flex w-full self-center overflow-hidden border border-border bg-card shadow-2xl backdrop-blur-sm lg:self-start"
+  >
+    <div class="relative flex w-12 shrink-0 flex-col bg-muted/30 sm:w-16">
+      <div
+        data-codeviewer-line-numbers
+        class="absolute inset-0 flex flex-col gap-px overflow-hidden border-r border-border py-6 pr-4 text-right font-mono text-muted-foreground/40 select-none"
+      >
+      </div>
+    </div>
+
+    <div data-codeviewer-scan aria-hidden="true"></div>
+
+    <div
+      data-codeviewer-content
+      class="custom-scrollbar flex-1 overflow-auto px-6 py-6 font-mono text-sm leading-6 whitespace-nowrap sm:text-base"
+    >
+      <CodeLine>
+        <span class="text-syntax-keyword">const</span>
+        <span class="ml-2 text-syntax-variable">developer</span>
+        <span class="ml-2">=</span>
+        <span class="ml-2 text-syntax-punctuation">{"{"}</span>
+      </CodeLine>
+
+      <CodeLine />
+      <div class="ml-4">
+        <CodeLine>
+          <span class="text-syntax-variable">name</span><span>:</span>
+          <span class="ml-2 text-syntax-punctuation">"</span><span
+            class="text-syntax-string">Elia Zarantonello</span
+          ><span class="text-syntax-punctuation">"</span><span>,</span>
+        </CodeLine>
+        <CodeLine>
+          <span class="text-syntax-variable">role</span><span>:</span>
+          <span class="ml-2 text-syntax-punctuation">"</span><span
+            class="text-syntax-string">{Astro.props.developer.role}</span
+          ><span class="text-syntax-punctuation">"</span><span>,</span>
+        </CodeLine>
+        <CodeLine>
+          <span class="text-syntax-variable">focus</span><span>:</span>
+          <span class="ml-2 text-syntax-punctuation">[</span>
+        </CodeLine>
+        <div class="ml-4">
+          {
+            Astro.props.developer.focus.map((item, index, arr) => (
+              <CodeLine>
+                <>
+                  <span class="text-syntax-punctuation">"</span>
+                  <span class="text-syntax-string">{item}</span>
+                  <span class="text-syntax-punctuation">"</span>
+                </>
+                {index < arr.length - 1 && <span>,</span>}
+              </CodeLine>
+            ))
+          }
+        </div>
+        <CodeLine>
+          <span class="text-syntax-punctuation">]</span><span>,</span>
+        </CodeLine>
+        <CodeLine>
+          <span class="text-syntax-variable">location</span><span>:</span>
+          <span class="ml-2 text-syntax-punctuation">"</span><span
+            class="text-syntax-string">{Astro.props.developer.location}</span
+          ><span class="text-syntax-punctuation">"</span><span>,</span>
+        </CodeLine>
+        <CodeLine>
+          <span class="text-syntax-variable">status</span><span>:</span>
+          <span class="ml-2 text-syntax-punctuation">"</span><span
+            class="text-syntax-string">{Astro.props.developer.status}</span
+          ><span class="text-syntax-punctuation">"</span><span>,</span>
+        </CodeLine>
+        <CodeLine>
+          <span class="text-syntax-variable">skills</span><span>:</span>
+        </CodeLine>
+        <Skills {...Astro.props} />
+        <CodeLine>
+          <span class="text-syntax-variable">beyond_code</span><span>:</span>
+        </CodeLine>
+        <BeyondCode {...Astro.props} />
+      </div>
+
+      <CodeLine>
+        <span class="text-syntax-punctuation">{"}"}</span>
+      </CodeLine>
+    </div>
+  </div>
+</Section>
+
+<script>
+  import "@/components/sections/about/scripts/code-viewer.motion"
+</script>

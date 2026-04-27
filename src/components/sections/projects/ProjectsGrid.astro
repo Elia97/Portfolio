@@ -1,0 +1,23 @@
+---
+import type { Translations } from "@/i18n/schema"
+import ProjectCard from "./ProjectCard.astro"
+
+interface Props {
+  items: Translations["projects"]["items"]
+  ctaLabel: string
+}
+
+const { items, ctaLabel } = Astro.props
+---
+
+<div data-projects-grid class="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-10">
+  {
+    items.map((project) => (
+      <ProjectCard project={project} ctaLabel={ctaLabel} />
+    ))
+  }
+</div>
+
+<script>
+  import "@/components/sections/projects/scripts/projects.motion"
+</script>

@@ -1,0 +1,83 @@
+---
+import { buttonVariants } from "@/lib/button-variants"
+import { motion, stagger } from "viewmotion"
+import Heading from "@/components/Heading.astro"
+import Section from "@/components/Section.astro"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["home"]["services"]
+---
+
+<Section align="center" data-services-section class="lg:px-12">
+  <Heading
+    level="h2"
+    heading={Astro.props.heading}
+    align="center"
+    class="mb-16"
+    {...motion({ preset: "fade-up" })}
+  />
+
+  <div
+    {...motion({ preset: "slide-left" })}
+    class="w-full overflow-hidden border border-border"
+  >
+    <div
+      {...stagger({ step: 200 })}
+      class="grid divide-y divide-border lg:grid-cols-3 lg:divide-x lg:divide-y-0"
+    >
+      {
+        Astro.props.items.map((item, index) => (
+          <div
+            {...motion({ preset: "slide-left" })}
+            class="group relative flex flex-col gap-6 overflow-hidden p-8 transition-colors duration-500 hover:bg-primary/10 xl:p-10"
+          >
+            <div class="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-primary transition-transform duration-500 group-hover:scale-x-100" />
+
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute top-2 right-4 font-heading text-7xl leading-none font-bold text-foreground/4 select-none xl:text-8xl"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div class="space-y-1">
+              <p class="font-mono text-xs tracking-[0.2em] text-primary uppercase">
+                0{index + 1}
+              </p>
+              <h3 class="font-heading text-xl font-semibold sm:text-2xl">
+                {item.title}
+              </h3>
+            </div>
+
+            <p
+              class="text-sm text-muted-foreground xl:text-base 2xl:text-xl"
+              set:html={item.description}
+            />
+
+            <div class="mt-auto border-t border-border pt-6">
+              <ul class="space-y-2">
+                {item.bullets.map((bullet) => (
+                  <li class="flex items-baseline gap-2.5 text-sm">
+                    <span class="shrink-0 font-mono text-xs text-primary">
+                      ›
+                    </span>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div {...motion({ preset: "fade-up" })} class="mt-12 flex justify-center">
+    <a
+      href={Astro.props.cta.href}
+      class={buttonVariants({ variant: "default", size: "lg" })}
+    >
+      {Astro.props.cta.text}
+    </a>
+  </div>
+</Section>

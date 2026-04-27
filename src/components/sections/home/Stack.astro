@@ -1,0 +1,55 @@
+---
+import { Icon } from "astro-icon/components"
+import { motion } from "viewmotion"
+import Heading from "@/components/Heading.astro"
+import Section from "@/components/Section.astro"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["home"]["stack"]
+---
+
+<Section align="center" data-stack-section>
+  <Heading
+    {...motion({ preset: "fade-up" })}
+    level="h2"
+    heading={Astro.props.heading}
+    description={Astro.props.description}
+    align="center"
+    data-stack-heading
+    class="my-12"
+  />
+
+  <div
+    data-stack-grid
+    class="mx-auto grid h-full w-full grid-cols-2 justify-items-center gap-12 md:grid-cols-3"
+  >
+    {
+      Astro.props.icons.map((icon) => (
+        <div data-stack-icon class="group relative cursor-default self-center">
+          <Icon
+            name={icon.icon}
+            class="size-20 md:size-16 lg:size-20 xl:size-24 2xl:size-40"
+          />
+          <span class="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 font-mono text-xs whitespace-nowrap opacity-0 transition-opacity duration-1000 group-hover:opacity-100 sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+            {icon.name}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  <button
+    data-stack-scroll
+    class="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 transform"
+    aria-label={Astro.props.scrollLabel}
+  >
+    <Icon
+      name="scroll-hint"
+      class="size-12 animate-bounce text-primary 2xl:size-24"
+    />
+  </button>
+</Section>
+
+<script>
+  import "@/components/sections/home/scripts/stack.motion"
+</script>

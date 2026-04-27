@@ -1,0 +1,58 @@
+---
+import CodeLine from "@/components/CodeLine.astro"
+import type { Translations } from "@/i18n/schema"
+
+type Props = Translations["about"]["codeViewer"]
+---
+
+<div class="ml-4">
+  <CodeLine><span class="text-syntax-punctuation">[</span></CodeLine>
+  {
+    Astro.props.skills.map((category, index, arr) => (
+      <div class="ml-4">
+        <CodeLine>
+          <span class="text-syntax-punctuation">{`{`}</span>
+        </CodeLine>
+        <div class="ml-4">
+          <CodeLine>
+            <>
+              <span class="text-syntax-variable">name</span>
+              <span>:</span>
+            </>
+            <>
+              <span class="ml-2 text-syntax-punctuation">"</span>
+              <span class="text-syntax-string">{category.name}</span>
+              <span class="text-syntax-punctuation">"</span>
+              <span>,</span>
+            </>
+          </CodeLine>
+          <CodeLine>
+            <>
+              <span class="text-syntax-variable">skills</span>
+              <span>:</span>
+            </>
+            <span class="ml-2 text-syntax-punctuation">[</span>
+          </CodeLine>
+          <div class="ml-4">
+            {category.skills.map((skill, skillIndex) => (
+              <CodeLine>
+                <span class="text-syntax-punctuation">"</span>
+                <span class="text-syntax-string">{skill}</span>
+                <span class="text-syntax-punctuation">"</span>
+                {skillIndex < category.skills.length - 1 && <span>,</span>}
+              </CodeLine>
+            ))}
+          </div>
+          <CodeLine>
+            <span class="text-syntax-punctuation">]</span>
+          </CodeLine>
+        </div>
+        <CodeLine>
+          <span class="text-syntax-punctuation">{`}`}</span>
+          {index < arr.length - 1 && <span>,</span>}
+        </CodeLine>
+      </div>
+    ))
+  }
+  <CodeLine><span class="text-syntax-punctuation">]</span></CodeLine>
+</div>
