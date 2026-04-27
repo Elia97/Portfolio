@@ -1,0 +1,32 @@
+---
+import { motion } from "viewmotion"
+---
+
+<div
+  data-header-effect
+  {...motion({ preset: "blur-in", delay: 1000 })}
+  class="pointer-events-none absolute top-0 left-0 z-0 h-(--header-effect-height) w-full overflow-hidden"
+>
+  <canvas data-matrix-canvas class="h-full w-full opacity-60"></canvas>
+</div>
+
+<style>
+  [data-header-effect] {
+    mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  }
+</style>
+
+<script>
+  import { MatrixEffect } from "@/lib/matrix-effect"
+
+  let effect: MatrixEffect | null = null
+
+  document.addEventListener("astro:page-load", () => {
+    effect?.destroy()
+    const canvas = document.querySelector<HTMLCanvasElement>(
+      "[data-matrix-canvas]"
+    )
+    if (canvas) effect = new MatrixEffect(canvas)
+  })
+</script>

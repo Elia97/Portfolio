@@ -1,0 +1,95 @@
+<svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Step positions: x = 44,116,188,260,332 at y=120 -->
+
+  <!-- Connecting lines (animated by GSAP) -->
+  <line data-svg-step-line="0" x1="66" y1="120" x2="94" y2="120"
+    pathLength="1" stroke-dasharray="1"
+    style="stroke:var(--border);stroke-width:2"/>
+  <line data-svg-step-line="1" x1="138" y1="120" x2="166" y2="120"
+    pathLength="1" stroke-dasharray="1"
+    style="stroke:var(--border);stroke-width:2"/>
+  <line data-svg-step-line="2" x1="210" y1="120" x2="238" y2="120"
+    pathLength="1" stroke-dasharray="1"
+    style="stroke:var(--border);stroke-width:2"/>
+  <line data-svg-step-line="3" x1="282" y1="120" x2="310" y2="120"
+    pathLength="1" stroke-dasharray="1"
+    style="stroke:var(--border);stroke-width:2"/>
+
+  <!-- Step 0: CODE -->
+  <g data-svg-step="0">
+    <circle data-svg-step-bg="0" cx="44" cy="120" r="22"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1.5"/>
+    <text data-svg-step-icon="0" x="44" y="124" text-anchor="middle"
+      font-family="monospace" font-size="11" font-weight="700"
+      style="fill:var(--muted-foreground)">{}</text>
+    <text data-svg-step-label="0" x="44" y="156" text-anchor="middle"
+      font-family="monospace" font-size="9"
+      style="fill:var(--muted-foreground)">code</text>
+  </g>
+
+  <!-- Step 1: BUILD -->
+  <g data-svg-step="1">
+    <circle data-svg-step-bg="1" cx="116" cy="120" r="22"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1.5"/>
+    <text data-svg-step-icon="1" x="116" y="124" text-anchor="middle"
+      font-family="monospace" font-size="11" font-weight="700"
+      style="fill:var(--muted-foreground)">pkg</text>
+    <text data-svg-step-label="1" x="116" y="156" text-anchor="middle"
+      font-family="monospace" font-size="9"
+      style="fill:var(--muted-foreground)">build</text>
+  </g>
+
+  <!-- Step 2: TEST -->
+  <g data-svg-step="2">
+    <circle data-svg-step-bg="2" cx="188" cy="120" r="22"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1.5"/>
+    <text data-svg-step-icon="2" x="188" y="124" text-anchor="middle"
+      font-family="monospace" font-size="11" font-weight="700"
+      style="fill:var(--muted-foreground)">✓</text>
+    <text data-svg-step-label="2" x="188" y="156" text-anchor="middle"
+      font-family="monospace" font-size="9"
+      style="fill:var(--muted-foreground)">test</text>
+  </g>
+
+  <!-- Step 3: PUSH -->
+  <g data-svg-step="3">
+    <circle data-svg-step-bg="3" cx="260" cy="120" r="22"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1.5"/>
+    <text data-svg-step-icon="3" x="260" y="124" text-anchor="middle"
+      font-family="monospace" font-size="13" font-weight="700"
+      style="fill:var(--muted-foreground)">↑</text>
+    <text data-svg-step-label="3" x="260" y="156" text-anchor="middle"
+      font-family="monospace" font-size="9"
+      style="fill:var(--muted-foreground)">push</text>
+  </g>
+
+  <!-- Step 4: LIVE -->
+  <g data-svg-step="4">
+    <circle data-svg-step-bg="4" cx="332" cy="120" r="22"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1.5"/>
+    <circle data-svg-step-pulse cx="332" cy="120" r="22"
+      style="fill:none;stroke:var(--primary);stroke-width:2"/>
+    <text data-svg-step-icon="4" x="332" y="124" text-anchor="middle"
+      font-family="monospace" font-size="11" font-weight="700"
+      style="fill:var(--muted-foreground)">●</text>
+    <text data-svg-step-label="4" x="332" y="156" text-anchor="middle"
+      font-family="monospace" font-size="9"
+      style="fill:var(--muted-foreground)">live</text>
+  </g>
+
+  <!-- Status bar -->
+  <g data-svg-status>
+    <rect x="60" y="185" width="280" height="48" rx="8"
+      style="fill:var(--card);stroke:var(--border);stroke-width:1"/>
+    <circle cx="82" cy="209" r="6"
+      style="fill:var(--primary);fill-opacity:.2;stroke:var(--primary);stroke-width:1"/>
+    <circle data-svg-live-dot cx="82" cy="209" r="3"
+      style="fill:var(--primary)"/>
+    <text x="96" y="206" font-family="monospace" font-size="9" font-weight="700"
+      style="fill:var(--foreground)">Production</text>
+    <text x="96" y="219" font-family="monospace" font-size="8"
+      style="fill:var(--muted-foreground)">app.eliazarantonello.dev · port 443</text>
+  </g>
+
+</svg>

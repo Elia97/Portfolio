@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+interface Props extends HTMLAttributes<"span"> {
+  variant?: "default" | "outline" | "success" | "highlight"
+  size?: "sm" | "md"
+}
+
+const {
+  variant = "default",
+  size = "md",
+  class: className,
+  ...props
+} = Astro.props
+
+const variantClass = {
+  default: "bg-primary/10 text-primary border-primary/20",
+  outline: "bg-transparent text-muted-foreground border-border",
+  success: "bg-success/10 text-success border-success/20",
+  highlight: "bg-highlight/10 text-highlight border-highlight/20",
+}
+
+const sizeClass = {
+  sm: "px-1.5 py-0.5 text-xs",
+  md: "px-2 py-1 text-sm",
+}
+---
+
+<span
+  {...props}
+  class:list={[
+    "inline-flex items-center border font-mono font-medium",
+    variantClass[variant],
+    sizeClass[size],
+    className,
+  ]}
+>
+  <slot />
+</span>

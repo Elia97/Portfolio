@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "viewmotion/styles.css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/jetbrains-mono";
@@ -7,13 +8,24 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
+  --header-height: 4rem;
+  --section-pt: calc(var(--header-height));
+  --header-effect-height: calc(var(--section-pt) * 4);
+  --matrix-char: oklch(0.4 0.13 186);
+  --matrix-bg: oklch(0.975 0.008 186 / 0.08);
+  --syntax-keyword: oklch(0.5 0.2 290);
+  --syntax-variable: oklch(0.45 0.16 225);
+  --syntax-string: oklch(0.48 0.18 155);
+  --syntax-punctuation: oklch(0.55 0.01 220);
+  --syntax-number: oklch(0.55 0.2 50);
+  --syntax-comment: oklch(0.62 0.01 220);
+  --background: oklch(0.975 0.008 186);
   --foreground: oklch(0.148 0.004 228.8);
-  --card: oklch(1 0 0);
+  --card: oklch(0.985 0.005 186);
   --card-foreground: oklch(0.148 0.004 228.8);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.148 0.004 228.8);
-  --primary: oklch(0.511 0.096 186.391);
+  --primary: oklch(0.4 0.13 186);
   --primary-foreground: oklch(0.984 0.014 180.72);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -30,6 +42,8 @@
   --chart-3: oklch(0.45 0.017 213.2);
   --chart-4: oklch(0.378 0.015 216);
   --chart-5: oklch(0.275 0.011 216.9);
+  --success: oklch(0.52 0.18 155);
+  --highlight: oklch(0.62 0.18 75);
   --radius: 0.625rem;
   --sidebar: oklch(0.987 0.002 197.1);
   --sidebar-foreground: oklch(0.148 0.004 228.8);
@@ -39,16 +53,36 @@
   --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
   --sidebar-border: oklch(0.925 0.005 214.3);
   --sidebar-ring: oklch(0.723 0.014 214.4);
+
+  /* Terminal Colors */
+  --terminal-bg: #0d1117;
+  --terminal-header: #161b22;
+  --terminal-border: #30363d;
+  --terminal-text: #c9d1d9;
+  --terminal-text-muted: #8b949e;
+  --terminal-dot-red: #ff5f56;
+  --terminal-dot-yellow: #ffbd2e;
+  --terminal-dot-green: #27c93f;
+  --terminal-prompt: #3fb950;
+  --terminal-cursor: #f0f6fc;
 }
 
 .dark {
+  --matrix-char: oklch(0.72 0.18 145);
+  --matrix-bg: oklch(0.148 0.004 228.8 / 0.08);
+  --syntax-keyword: oklch(0.78 0.2 295);
+  --syntax-variable: oklch(0.8 0.15 225);
+  --syntax-string: oklch(0.8 0.18 155);
+  --syntax-punctuation: oklch(0.62 0.01 220);
+  --syntax-number: oklch(0.85 0.2 65);
+  --syntax-comment: oklch(0.56 0.021 213.5);
   --background: oklch(0.148 0.004 228.8);
   --foreground: oklch(0.987 0.002 197.1);
   --card: oklch(0.218 0.008 223.9);
   --card-foreground: oklch(0.987 0.002 197.1);
   --popover: oklch(0.218 0.008 223.9);
   --popover-foreground: oklch(0.987 0.002 197.1);
-  --primary: oklch(0.437 0.078 188.216);
+  --primary: oklch(0.75 0.15 186);
   --primary-foreground: oklch(0.984 0.014 180.72);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
@@ -73,6 +107,20 @@
   --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.56 0.021 213.5);
+  --success: oklch(0.72 0.18 155);
+  --highlight: oklch(0.78 0.18 75);
+
+  /* Terminal Colors (Dark) */
+  --terminal-bg: #0d1117;
+  --terminal-header: #161b22;
+  --terminal-border: #30363d;
+  --terminal-text: #c9d1d9;
+  --terminal-text-muted: #8b949e;
+  --terminal-dot-red: #ff5f56;
+  --terminal-dot-yellow: #ffbd2e;
+  --terminal-dot-green: #27c93f;
+  --terminal-prompt: #3fb950;
+  --terminal-cursor: #f0f6fc;
 }
 
 @theme inline {
@@ -109,6 +157,14 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-success: var(--success);
+  --color-highlight: var(--highlight);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-variable: var(--syntax-variable);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-punctuation: var(--syntax-punctuation);
+  --color-syntax-number: var(--syntax-number);
+  --color-syntax-comment: var(--syntax-comment);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -116,6 +172,17 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-terminal-bg: var(--terminal-bg);
+  --color-terminal-header: var(--terminal-header);
+  --color-terminal-border: var(--terminal-border);
+  --color-terminal-text: var(--terminal-text);
+  --color-terminal-text-muted: var(--terminal-text-muted);
+  --color-terminal-dot-red: var(--terminal-dot-red);
+  --color-terminal-dot-yellow: var(--terminal-dot-yellow);
+  --color-terminal-dot-green: var(--terminal-dot-green);
+  --color-terminal-prompt: var(--terminal-prompt);
+  --color-terminal-cursor: var(--terminal-cursor);
 }
 
 @layer base {
@@ -131,6 +198,7 @@
   }
   html {
     @apply font-mono;
+    scroll-padding-top: var(--header-height);
   }
   h1,
   h2,
@@ -140,14 +208,130 @@
   h6 {
     @apply font-heading;
   }
+
+  p {
+    @apply leading-relaxed text-muted-foreground;
+  }
 }
 
 @layer utilities {
-  .heading {
-    @apply text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl;
-  }
-
   .section {
     @apply flex min-h-svh flex-col items-center justify-center px-6 py-12;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  /* ── CodeViewer hover system ─────────────────────────────────────── */
+
+  [data-codeviewer-viewer] {
+    cursor: crosshair;
+    transition:
+      border-color 350ms ease,
+      box-shadow 350ms ease;
+  }
+
+  [data-codeviewer-viewer]:hover {
+    border-color: var(--primary);
+    box-shadow:
+      0 25px 50px -12px rgb(0 0 0 / 0.25),
+      0 0 0 1px color-mix(in oklch, var(--primary) 25%, transparent),
+      0 0 60px -10px color-mix(in oklch, var(--primary) 12%, transparent);
+  }
+
+  .dark [data-codeviewer-viewer]:hover {
+    box-shadow:
+      0 25px 50px -12px rgb(0 0 0 / 0.5),
+      0 0 0 1px color-mix(in oklch, var(--primary) 35%, transparent),
+      0 0 60px -10px color-mix(in oklch, var(--primary) 22%, transparent);
+  }
+
+  /* Scanline */
+  [data-codeviewer-scan] {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  [data-codeviewer-scan]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    top: var(--scan-y, -10px);
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklch, var(--primary) 60%, transparent) 15%,
+      var(--primary) 50%,
+      color-mix(in oklch, var(--primary) 60%, transparent) 85%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+
+  [data-codeviewer-viewer]:hover [data-codeviewer-scan]::after {
+    opacity: 0.35;
+  }
+
+  .dark [data-codeviewer-viewer]:hover [data-codeviewer-scan]::after {
+    opacity: 0.55;
+  }
+
+  /* Active line */
+  [data-codeviewer-content] .code-line {
+    border-radius: 3px;
+    padding-left: 6px;
+    transition:
+      background-color 80ms ease,
+      box-shadow 80ms ease;
+  }
+
+  [data-codeviewer-content] .code-line:hover {
+    background-color: color-mix(in oklch, var(--primary) 5%, transparent);
+    box-shadow: inset 2px 0 0 var(--primary);
+  }
+
+  .dark [data-codeviewer-content] .code-line:hover {
+    background-color: color-mix(in oklch, var(--primary) 8%, transparent);
+  }
+
+  /* String glow */
+  [data-codeviewer-content] .text-syntax-string {
+    transition:
+      filter 150ms ease,
+      text-shadow 150ms ease;
+  }
+
+  [data-codeviewer-content] .text-syntax-string:hover {
+    filter: brightness(1.25) saturate(1.2);
+    text-shadow: 0 0 18px var(--color-syntax-string);
+    cursor: text;
+  }
+
+  /* Variable dotted underline */
+  [data-codeviewer-content] .text-syntax-variable {
+    transition: text-decoration-color 120ms ease;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  [data-codeviewer-content] .text-syntax-variable:hover {
+    text-decoration-color: var(--color-syntax-variable);
+    cursor: default;
+  }
+
+  /* Keyword glow */
+  [data-codeviewer-content] .text-syntax-keyword:hover {
+    filter: brightness(1.2);
+    text-shadow: 0 0 12px var(--color-syntax-keyword);
   }
 }

@@ -1,0 +1,65 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+interface Props extends HTMLAttributes<"div"> {
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+  heading: string
+  description?: string
+  align?: "left" | "center" | "right"
+  class?: string
+  headingAttrs?: Record<string, unknown>
+  descriptionAttrs?: Record<string, unknown>
+}
+
+const levelClass: Record<string, string> = {
+  h1: "text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl",
+  h2: "text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl",
+  h3: "text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl",
+  h4: "text-base font-semibold sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl",
+  h5: "text-sm font-semibold sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl",
+  h6: "text-xs font-semibold sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl",
+}
+
+const {
+  level: Tag,
+  heading,
+  description,
+  class: className,
+  align = "left",
+  headingAttrs,
+  descriptionAttrs,
+  ...props
+} = Astro.props as Props
+
+const { class: headingExtraClass, ...headingRest } = headingAttrs ?? {}
+const { class: descriptionExtraClass, ...descriptionRest } =
+  descriptionAttrs ?? {}
+---
+
+<div
+  {...props}
+  class:list={[
+    "max-w-md space-y-3 md:max-w-xl lg:max-w-2xl xl:max-w-4xl 2xl:max-w-5xl 2xl:space-y-6",
+    {
+      "text-center": align === "center",
+      "mx-auto": align === "center",
+      "text-right": align === "right",
+    },
+    className,
+  ]}
+>
+  <Tag
+    {...headingRest}
+    class:list={[levelClass[Tag], headingExtraClass]}
+    set:html={heading}
+  />
+  {
+    description && (
+      <p
+        {...descriptionRest}
+        class:list={["text-sm xl:text-base 2xl:text-xl", descriptionExtraClass]}
+        set:html={description}
+      />
+    )
+  }
+</div>
