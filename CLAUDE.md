@@ -26,6 +26,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **URL con locale**: usare sempre `getRelativeLocaleUrl(locale, path)` da `astro:i18n`. Non hardcodare mai path con o senza prefisso `/en/`.
 
+**Targeting elementi da script**: usare `data-[sezione]-[elemento]` — mai `id` per questo scopo. Gli `id` sono riservati ad ancore/link interni e label form.
+
+**Props componenti sezione**: `type Props = Translations["sezione"]["chiave"]`, accesso diretto via `Astro.props`. Nessun wrapper `content`.
+
+**Script animazioni**: ogni sezione ha `scripts/*.motion.ts` come modulo side-effect. Pattern: funzione `setup[Sezione]()` + `document.addEventListener("astro:page-load", setup[Sezione])`. Import nel componente come `import "@/components/sections/[sezione]/scripts/[nome].motion"`.
+
+**Animazioni**: `motion()` / `stagger()` da `viewmotion` per animazioni standard. GSAP diretto solo per logica complessa (typewriter, scrub, pinning).
+
+**Heading**: usare `<Heading level="h1|h2|..." />` da `@/components/Heading.astro`. Non usare tag `<h*>` diretti nelle sezioni.
+
 **Commit messages**: Conventional Commits. Tipi validi: `feat` `fix` `chore` `docs` `style` `refactor` `perf` `test` `ci` `build` `revert`.
 
 ## Stack

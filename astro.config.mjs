@@ -12,6 +12,9 @@ export default defineConfig({
   trailingSlash: "always",
   site: "https://eliazarantonello.dev",
   vite: {
+    server: {
+      allowedHosts: ["fondness-sector-unicorn.ngrok-free.dev"],
+    },
     plugins: [tailwindcss()],
     build: {
       rollupOptions: {

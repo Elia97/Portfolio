@@ -8,7 +8,7 @@ export async function GET(context: APIContext) {
   const posts = await getCollection("blog")
 
   const items = posts
-    .filter((post) => post.data.lang === "it")
+    .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .map((post) => ({
       title: post.data.title,
