@@ -26,29 +26,29 @@ const socials = [
 ]
 ---
 
-<footer class="space-y-6 px-12 py-6">
+<footer class="space-y-6 px-6 py-3 lg:px-12 lg:py-6">
   <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
     <div class="space-y-4">
-      <h4 class="text-xl font-bold text-pretty sm:text-2xl lg:text-3xl">
+      <h4 class="text-2xl font-bold sm:text-3xl">
         {t("site.name")}
       </h4>
-      <p class="max-w-xs text-sm text-muted-foreground">
+      <p class="body max-w-xs">
         {t("site.description")}
       </p>
     </div>
 
     <div class="space-y-4 md:justify-self-center">
-      <h5 class="text-lg font-bold tracking-wide text-pretty uppercase">
+      <h5 class="text-sm tracking-[0.15em] uppercase sm:text-base">
         {t("footer.navigation")}
       </h5>
       <nav>
-        <ul class="flex flex-col gap-3 text-sm">
+        <ul class="flex flex-col gap-3">
           {
             navItems.map((item) => (
               <li>
                 <a
                   href={getRelativeLocaleUrl(locale, item.href)}
-                  class="text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                  class="text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
                 >
                   {item.label}
                 </a>
@@ -60,7 +60,7 @@ const socials = [
     </div>
 
     <div class="space-y-4 md:justify-self-center">
-      <h5 class="text-lg font-bold tracking-wide text-pretty uppercase">
+      <h5 class="text-sm tracking-[0.15em] uppercase sm:text-base">
         {t("footer.connect")}
       </h5>
       <div class="flex gap-4">
@@ -70,10 +70,10 @@ const socials = [
               href={href}
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-              class="border border-muted p-2 transition-all duration-300 hover:border-primary hover:bg-primary/20"
+              class="border border-muted p-2.5 transition-all duration-300 hover:border-primary hover:bg-primary/20"
               aria-label={label}
             >
-              <Icon name={icon} class="h-5 w-5" />
+              <Icon name={icon} class="h-6 w-6" />
             </a>
           ))
         }
@@ -82,19 +82,19 @@ const socials = [
   </div>
 
   <div
-    class="flex flex-col items-center justify-between gap-4 border-t border-muted pt-8 text-sm sm:flex-row"
+    class="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row"
   >
-    <small class="text-center sm:text-left">
+    <small class="text-center text-xs text-muted-foreground sm:text-left">
       &copy; {new Date().getFullYear()}
       {t("site.name")}. {t("footer.copyright")}
     </small>
-    <small class="text-center sm:text-right">
+    <small class="text-center text-xs text-muted-foreground sm:text-right">
       {t("footer.builtWith")}
       <a
         href="https://astro.build"
         target="_blank"
         rel="noopener noreferrer"
-        class="font-semibold text-muted-foreground underline-offset-2 transition-all duration-300 hover:text-foreground hover:underline"
+        class="text-muted-foreground underline-offset-2 transition-colors duration-300 hover:text-foreground hover:underline"
       >
         Astro
       </a>
@@ -103,7 +103,7 @@ const socials = [
         href="https://tailwindcss.com"
         target="_blank"
         rel="noopener noreferrer"
-        class="font-semibold text-muted-foreground underline-offset-2 transition-all duration-300 hover:text-foreground hover:underline"
+        class="text-muted-foreground underline-offset-2 transition-colors duration-300 hover:text-foreground hover:underline"
       >
         Tailwind CSS
       </a>

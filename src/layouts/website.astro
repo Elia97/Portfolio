@@ -2,6 +2,7 @@
 import Layout from "./main.astro"
 import Header from "@/components/SiteHeader.astro"
 import Footer from "@/components/SiteFooter.astro"
+import { slide } from "astro:transitions"
 
 interface Props {
   title?: string
@@ -23,9 +24,30 @@ const { title, description, image, noindex, article } = Astro.props
 >
   <body>
     <Header />
-    <main>
+    <main transition:animate={slide({ duration: "1s" })}>
       <slot />
     </main>
     <Footer />
   </body>
 </Layout>
+
+<script>
+  let _ro: ResizeObserver | null = null
+
+  function setupHeaderHeight() {
+    _ro?.disconnect()
+    const header = document.querySelector<HTMLElement>("[data-site-header]")
+    if (!header) return
+    const update = () =>
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${header.offsetHeight}px`
+      )
+    update()
+    _ro = new ResizeObserver(update)
+    _ro.observe(header)
+  }
+
+  setupHeaderHeight()
+  document.addEventListener("astro:after-swap", setupHeaderHeight)
+</script>

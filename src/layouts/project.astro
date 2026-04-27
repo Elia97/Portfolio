@@ -1,0 +1,75 @@
+---
+import MainLayout from "./main.astro"
+import ThemeToggle from "@/components/ThemeToggle.astro"
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro"
+
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  noindex?: boolean
+  alternateHref?: string
+}
+
+const { title, description, image, noindex, alternateHref } = Astro.props
+---
+
+<MainLayout
+  title={title}
+  description={description}
+  image={image}
+  noindex={noindex}
+>
+  <body>
+    <!-- Barra di progresso lettura -->
+    <div
+      data-progress-bar
+      aria-hidden="true"
+      class="pointer-events-none fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-primary"
+      style="transform: scaleX(0)"
+    >
+    </div>
+
+    <!-- Controlli fissi -->
+    <div class="fixed top-4 right-6 z-40 flex items-center gap-1">
+      <ThemeToggle />
+      <LanguageSwitcher alternateHref={alternateHref} />
+    </div>
+
+    <slot />
+  </body>
+</MainLayout>
+
+<script>
+  import { createSignal } from "@/lib/create-signal"
+
+  const getSignal = createSignal()
+
+  function setup() {
+    const signal = getSignal()
+    const bar = document.querySelector<HTMLElement>("[data-progress-bar]")
+    if (!bar) return
+
+    bar.style.opacity = ""
+
+    const update = () => {
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight
+      bar.style.transform =
+        scrollable > 0 ? `scaleX(${window.scrollY / scrollable})` : "scaleX(0)"
+    }
+
+    window.addEventListener("scroll", update, { passive: true, signal })
+    update()
+  }
+
+  function hide() {
+    const bar = document.querySelector<HTMLElement>("[data-progress-bar]")
+    if (!bar) return
+    bar.style.opacity = "0"
+    bar.style.transform = "scaleX(0)"
+  }
+
+  document.addEventListener("astro:page-load", setup)
+  document.addEventListener("astro:before-preparation", hide)
+</script>

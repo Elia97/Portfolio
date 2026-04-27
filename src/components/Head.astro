@@ -142,11 +142,23 @@ const structuredData = article
     const currentLocale = document.documentElement.lang
     if (savedLocale && savedLocale !== currentLocale) {
       const path = window.location.pathname
-      if (path === "/" && savedLocale === "en") {
-        window.location.replace("/en/")
-      } else if (path === "/en/" && savedLocale === "it") {
-        window.location.replace("/")
+      const itPages = {
+        "/": "/en/",
+        "/blog/": "/en/blog/",
+        "/chi-sono/": "/en/about/",
+        "/progetti/": "/en/projects/",
+        "/contatti/": "/en/contact/",
       }
+      const enPages = {
+        "/en/": "/",
+        "/en/blog/": "/blog/",
+        "/en/about/": "/chi-sono/",
+        "/en/projects/": "/progetti/",
+        "/en/contact/": "/contatti/",
+      }
+      const map = savedLocale === "en" ? itPages : enPages
+      const target = map[path]
+      if (target) window.location.replace(target)
     }
   </script>
 </head>

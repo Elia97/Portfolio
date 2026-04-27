@@ -3,7 +3,6 @@ import { getRelativeLocaleUrl } from "astro:i18n"
 import Layout from "@/layouts/main.astro"
 import { buttonVariants } from "@/lib/button-variants"
 import { getTranslations } from "@/i18n"
-import { fade } from "astro:transitions"
 
 const locale = Astro.currentLocale ?? "it"
 const t = getTranslations(locale)
@@ -13,7 +12,6 @@ const t = getTranslations(locale)
   <body>
     <main
       class="flex min-h-svh flex-col items-center justify-center gap-6 2xl:gap-10"
-      transition:animate={fade({ duration: "0.5s" })}
     >
       <p
         aria-hidden="true"

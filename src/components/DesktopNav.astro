@@ -21,7 +21,9 @@ const linkStyle =
   "inline-flex gap-3 px-6 py-3 font-medium outline-none transition-[color,box-shadow] duration-300 hover:bg-muted hover:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 lg:text-sm xl:text-base 2xl:text-xl"
 ---
 
-<nav class="mx-auto hidden w-fit backdrop-blur-xs lg:block">
+<nav
+  class="mx-auto hidden w-fit border border-border bg-card shadow-2xl backdrop-blur-sm lg:block"
+>
   <ul class="flex items-center">
     {
       items.map((item) => (

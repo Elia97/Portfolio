@@ -3,6 +3,12 @@ import { getRelativeLocaleUrl } from "astro:i18n"
 import { getNavItems } from "@/i18n"
 import { buttonVariants } from "@/lib/button-variants"
 
+interface Props {
+  alternateHref?: string
+}
+
+const { alternateHref } = Astro.props
+
 const currentLocale = Astro.currentLocale ?? "it"
 const targetLocale = currentLocale === "it" ? "en" : "it"
 const pathname = Astro.url.pathname
@@ -10,15 +16,19 @@ const pathname = Astro.url.pathname
 const currentItems = getNavItems(currentLocale)
 const targetItems = getNavItems(targetLocale)
 
-let targetUrl = getRelativeLocaleUrl(targetLocale, "/")
+let targetUrl = alternateHref ?? getRelativeLocaleUrl(targetLocale, "/")
 
-for (let i = 0; i < currentItems.length; i++) {
-  const resolved = getRelativeLocaleUrl(currentLocale, currentItems[i].href)
-  const isHome = currentItems[i].href === "/"
-  const matches = isHome ? pathname === resolved : pathname.startsWith(resolved)
-  if (matches) {
-    targetUrl = getRelativeLocaleUrl(targetLocale, targetItems[i].href)
-    break
+if (!alternateHref) {
+  for (let i = 0; i < currentItems.length; i++) {
+    const resolved = getRelativeLocaleUrl(currentLocale, currentItems[i].href)
+    const isHome = currentItems[i].href === "/"
+    const matches = isHome
+      ? pathname === resolved
+      : pathname.startsWith(resolved)
+    if (matches) {
+      targetUrl = getRelativeLocaleUrl(targetLocale, targetItems[i].href)
+      break
+    }
   }
 }
 ---
@@ -27,7 +37,10 @@ for (let i = 0; i < currentItems.length; i++) {
   id="lang-switcher"
   href={targetUrl}
   data-target-locale={targetLocale}
-  class={buttonVariants({ variant: "ghost", size: "icon-lg" })}
+  class:list={[
+    buttonVariants({ variant: "ghost", size: "icon-lg" }),
+    "border border-border bg-card shadow-2xl backdrop-blur-sm",
+  ]}
   aria-label={`Switch to ${targetLocale.toUpperCase()}`}
 >
   {targetLocale.toUpperCase()}

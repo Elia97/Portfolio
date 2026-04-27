@@ -12,9 +12,12 @@ const navItems = getNavItems(locale)
 const t = getTranslations(locale)
 ---
 
-<header class="fixed top-0 right-0 left-0 z-10 h-16 py-3 lg:h-auto 2xl:py-6">
+<header
+  data-site-header
+  class="fixed top-0 right-0 left-0 z-10 h-16 py-3 lg:h-auto 2xl:py-6"
+>
   <div
-    class="absolute top-1/2 left-6 flex -translate-y-1/2 items-center gap-2 lg:right-6 lg:left-auto"
+    class="absolute top-1/2 left-6 flex -translate-y-1/2 items-center lg:right-6 lg:left-auto"
   >
     <ThemeToggle />
     <LanguageSwitcher />
