@@ -1,0 +1,359 @@
+/* ── Blog Design System ──────────────────────────────────────────────────── */
+/*                                                                            */
+/* Concettualmente separato dal design system del sito.                      */
+/* Eredita i token CSS del sito (colori, radius, border);                    */
+/* introduce un layer tipografico proprio per l'esperienza di lettura.        */
+/*                                                                            */
+/* Font strategy:                                                              */
+/*   Titoli (h1, h2, h3)  → Fraunces Variable (serif editoriale + opsz)     */
+/*   Corpo del testo       → Source Sans 3 Variable (sans leggibile)         */
+/*   h4 / metadati         → Geist Mono (continuità col sito)                */
+/*   Code blocks           → JetBrains Mono (tecnico, invariato)             */
+
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/source-sans-3";
+
+/* ── Blog tokens ─────────────────────────────────────────────────────────── */
+
+:root {
+  --blog-font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --blog-font-body: "Source Sans 3 Variable", system-ui, sans-serif;
+
+  /* Scala tipografica */
+  --blog-size-lede: 1.25rem;
+  --blog-size-body: 1.0625rem;
+  --blog-size-h2: 1.875rem;
+  --blog-size-h3: 1.375rem;
+  --blog-size-h4: 0.8125rem;
+
+  /* Ritmo verticale */
+  --blog-leading-lede: 1.65;
+  --blog-leading-body: 1.75;
+  --blog-gap-h2: 3.5rem;
+  --blog-gap-h3: 2.25rem;
+  --blog-gap-h4: 1.75rem;
+  --blog-gap-p: 1.5rem;
+  --blog-gap-block: 2rem;
+}
+
+/* ── Article header ──────────────────────────────────────────────────────── */
+
+.blog-article-title {
+  font-family: var(--blog-font-display);
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--foreground);
+  font-optical-sizing: auto;
+}
+
+/* Lede in Fraunces italic: bridge editoriale tra titolo display e corpo sans */
+.blog-article-lede {
+  font-family: var(--blog-font-display);
+  font-size: var(--blog-size-lede);
+  line-height: var(--blog-leading-lede);
+  color: var(--muted-foreground);
+  font-style: italic;
+  font-optical-sizing: auto;
+  max-width: 58ch;
+  margin: 0;
+}
+
+/* ── Prose content ───────────────────────────────────────────────────────── */
+
+.prose-blog {
+  font-family: var(--blog-font-body);
+  font-size: var(--blog-size-body);
+  line-height: var(--blog-leading-body);
+  color: var(--foreground);
+}
+
+.prose-blog h2,
+.prose-blog h3 {
+  font-family: var(--blog-font-display);
+  color: var(--foreground);
+  font-optical-sizing: auto;
+  scroll-margin-top: 6rem;
+}
+
+.prose-blog h2 {
+  font-size: var(--blog-size-h2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: var(--blog-gap-h2);
+  margin-bottom: 1.25rem;
+}
+
+.prose-blog h3 {
+  font-size: var(--blog-size-h3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin-top: var(--blog-gap-h3);
+  margin-bottom: 0.875rem;
+}
+
+/* h4: etichetta strutturale in mono — segnala "metadato", non "narrativa" */
+.prose-blog h4 {
+  font-family: var(--font-mono);
+  font-size: var(--blog-size-h4);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-top: var(--blog-gap-h4);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  scroll-margin-top: 6rem;
+  font-optical-sizing: none;
+}
+
+.prose-blog p {
+  margin-bottom: var(--blog-gap-p);
+  color: var(--foreground);
+  line-height: var(--blog-leading-body);
+}
+
+.prose-blog a {
+  color: var(--highlight);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity 150ms ease;
+}
+
+.prose-blog a:hover {
+  opacity: 0.75;
+}
+
+.prose-blog strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose-blog em {
+  font-style: italic;
+}
+
+.prose-blog code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--muted);
+  color: var(--highlight);
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--border);
+}
+
+.prose-blog pre {
+  background: var(--muted);
+  border: 1px solid var(--border);
+  padding: 1.25rem 1rem;
+  overflow-x: auto;
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.625;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.prose-blog pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose-blog .astro-code {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border);
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+  padding: 1.25rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.625;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.prose-blog blockquote {
+  border-left: 3px solid var(--highlight);
+  padding-left: 1.25rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+  font-family: var(--blog-font-display);
+  font-style: italic;
+  font-optical-sizing: auto;
+  color: var(--muted-foreground);
+  font-size: 1.1em;
+  line-height: 1.65;
+}
+
+.prose-blog ul {
+  list-style: none;
+  padding-left: 1.375rem;
+  margin-top: var(--blog-gap-p);
+  margin-bottom: var(--blog-gap-p);
+}
+
+.prose-blog ul > li {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.prose-blog ul > li::before {
+  content: ">";
+  position: absolute;
+  left: -1.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--highlight);
+  top: 0.15em;
+}
+
+.prose-blog ol {
+  padding-left: 1.5rem;
+  margin-top: var(--blog-gap-p);
+  margin-bottom: var(--blog-gap-p);
+}
+
+.prose-blog ol > li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-blog ol > li::marker {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--highlight);
+}
+
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+}
+
+.prose-blog th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  text-align: left;
+}
+
+.prose-blog td {
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+  padding: 0.75rem 0.75rem 0.75rem 0;
+  color: var(--muted-foreground);
+}
+
+.prose-blog img {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+}
+
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-top: 2.75rem;
+  margin-bottom: 2.75rem;
+}
+
+/* ── Callout ─────────────────────────────────────────────────────────────── */
+
+.prose-blog .callout {
+  border-left: 3px solid var(--highlight);
+  padding: 1rem 1.25rem;
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+  background: color-mix(in oklch, var(--muted) 40%, transparent);
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+}
+
+.prose-blog .callout strong {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--foreground);
+}
+
+.prose-blog .callout.note {
+  border-color: var(--highlight);
+}
+.prose-blog .callout.tip {
+  border-color: var(--success);
+}
+.prose-blog .callout.warning {
+  border-color: var(--destructive);
+}
+
+/* ── Feature list ────────────────────────────────────────────────────────── */
+
+.prose-blog .feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: var(--blog-gap-block);
+  margin-bottom: var(--blog-gap-block);
+  list-style: none;
+  padding: 0;
+}
+
+.prose-blog .feature-item {
+  border: 1px solid var(--border);
+  background: color-mix(in oklch, var(--muted) 20%, transparent);
+  padding: 1rem;
+  font-size: 0.9375rem;
+  color: var(--muted-foreground);
+  transition: border-color 200ms ease;
+}
+
+.prose-blog .feature-item:hover {
+  border-color: var(--highlight);
+}
+
+.prose-blog .feature-item strong {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--foreground);
+}
+
+/* ── Badge inline ────────────────────────────────────────────────────────── */
+
+.prose-blog .badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  background: color-mix(in oklch, var(--highlight) 10%, transparent);
+  color: var(--highlight);
+  border: 1px solid color-mix(in oklch, var(--highlight) 30%, transparent);
+}

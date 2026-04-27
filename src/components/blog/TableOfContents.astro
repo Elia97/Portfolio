@@ -1,0 +1,81 @@
+---
+import type { MarkdownHeading } from "astro"
+import { getTranslations } from "@/i18n"
+
+interface Props {
+  headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+const locale = Astro.currentLocale ?? "it"
+const t = getTranslations(locale)
+
+const visible = headings.filter((h) => h.depth === 2 || h.depth === 3)
+---
+
+{
+  visible.length > 0 && (
+    <nav
+      data-toc
+      aria-label={t("blog.ui.tocLabel")}
+      class="fixed top-24 right-12 z-20 hidden w-60 xl:block 2xl:top-48 2xl:right-24 2xl:w-120"
+    >
+      <p class="mb-3 font-mono font-semibold tracking-widest text-muted-foreground uppercase 2xl:text-[11px]">
+        {t("blog.ui.tocLabel")}
+      </p>
+
+      <div class="relative">
+        <div
+          data-toc-cursor
+          class="pointer-events-none absolute top-0 -left-px h-6 w-1 rounded-full bg-primary opacity-0"
+        />
+
+        <ul class="space-y-3 border-l border-border">
+          {visible.map((heading, i) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                data-toc-link
+                class:list={[
+                  "group flex items-center gap-2 py-1 text-muted-foreground xl:text-[14px] 2xl:text-[16px]",
+                  heading.depth === 2 ? "pl-4" : "pl-7",
+                ]}
+              >
+                <span
+                  data-toc-num
+                  class="inline-block w-5 shrink-0 text-right font-mono opacity-30 xl:text-[10px] 2xl:text-[12px]"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span class="truncate leading-5">{heading.text}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  )
+}
+
+<style>
+  [data-toc-link] {
+    transition: color 200ms ease;
+  }
+
+  [data-toc-link][data-active] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  [data-toc-num] {
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease;
+  }
+
+  [data-toc-link][data-active] [data-toc-num] {
+    opacity: 1;
+    transform: scale(1.25);
+    transform-origin: right center;
+  }
+</style>

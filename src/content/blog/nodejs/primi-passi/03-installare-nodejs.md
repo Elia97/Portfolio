@@ -1,0 +1,144 @@
+---
+title: "Come Installare Node.js: La Guida Completa"
+description: "Scopri come installare Node.js su Windows, macOS e Linux, scegliendo tra l'installer ufficiale, NVM e Docker."
+pubDate: "Jan 14 2026"
+tags: ["installazione", "setup", "nvm", "docker"]
+series: "primi-passi-con-nodejs"
+order: 3
+---
+
+<div class="callout note">
+  <strong>Pronti a iniziare:</strong> Installare Node.js è semplice e veloce. In pochi minuti sarai pronto a scrivere il tuo primo codice JavaScript lato server.
+</div>
+
+Installare Node.js oggi è molto più semplice rispetto al passato, ma la scelta del metodo giusto dipende dalle tue esigenze di sviluppo e dal tuo sistema operativo. Il sito ufficiale [nodejs.org](https://nodejs.org/en/download) è stato recentemente aggiornato per offrire un'esperienza più mirata in base all'architettura del tuo computer.
+
+## Scegliere la versione: LTS vs Current
+
+Prima di installare, devi decidere quale versione scaricare:
+
+- **LTS (Long Term Support)**: È la versione raccomandata per la maggior parte degli utenti. È stabile, sicura e riceve aggiornamenti critici per un lungo periodo. Ideale per progetti di produzione.
+- **Current**: Include le ultime funzionalità appena rilasciate. È utile se vuoi sperimentare le novità di Node.js, ma potrebbe essere meno stabile.
+
+## 1. Utilizzare il sito ufficiale
+
+Il nuovo portale [nodejs.org/en/download](https://nodejs.org/en/download) non è più una semplice lista di file, ma un vero e proprio **configuratore interattivo**. In base al sistema operativo che stai usando, ti permette di generare snippet di codice pronti per l'uso.
+
+### Il Configuratore Interattivo
+
+Navigando nella sezione principale, puoi selezionare:
+
+1. **OS**: Windows, macOS, Linux, AIX, ecc.
+2. **Metodo**: Tramite download diretto (Installer), gestore pacchetti (Chocolatey, Homebrew, APT) o gestori di versioni (nvm, fnm).
+3. **Package Manager**: npm, yarn o pnpm.
+
+Una volta selezionate le tue preferenze, il sito mostrerà uno snippet di codice che puoi copiare e incollare direttamente nel tuo terminale. Ad esempio:
+
+- Su **Windows con Chocolatey**: Ti fornirà il comando `choco install nodejs`.
+- Su **macOS con NVM**: Ti mostrerà i comandi `curl` per installare NVM e `nvm install 24`.
+- Con **Docker**: Ti darà il comando `docker pull node:24-alpine`.
+
+### Tabelle dei Prebuilt Binaries (Per installazioni manuali)
+
+Se invece preferisci scaricare un file specifico o devi preparare un'installazione per un altro computer, scorri fino alla sezione **Prebuilt Binaries**. Qui troverai i file divisi per architettura:
+
+#### Windows
+
+Per Windows sono disponibili installer (.msi) e pacchetti compressi (.zip) per:
+
+- **x64**: La versione standard per processori Intel e AMD a 64 bit.
+- **ARM64**: Per i nuovi laptop Windows basati su processori ARM (come i Surface Pro X o i nuovi PC con chip Snapdragon).
+
+#### macOS
+
+Per macOS, l'installer (.pkg) è ormai universale o diviso in:
+
+- **ARM64**: Per i Mac con chip Apple Silicon (serie M1, M2, M3, M4).
+- **x64**: Per i vecchi Mac con processore Intel.
+
+#### Linux
+
+Node.js supporta una vasta gamma di architetture Linux tramite file `.tar.xz`:
+
+- **x64**: Per desktop e server tradizionali.
+- **ARM64 (ARMv8)**: Per server cloud moderni e dispositivi come il Raspberry Pi 4/5.
+- **ARMv7**: Per dispositivi più datati o embedded.
+
+### Come capire quale architettura hai?
+
+Se hai dubbi, puoi lanciare un comando veloce nel tuo terminale prima di procedere al download:
+
+- **Windows (PowerShell)**: `$env:PROCESSOR_ARCHITECTURE`
+- **macOS/Linux**: `uname -m`
+
+Se il risultato è `x86_64` o `AMD64`, scarica la versione **x64**. Se il risultato è `arm64` o `aarch64`, scarica la versione **ARM64**.
+
+## 2. Gestori di Versioni e Package Manager
+
+Oltre agli snippet forniti dal configuratore del sito, ecco i metodi più comuni che ogni sviluppatore dovrebbe conoscere:
+
+- **NVM (Node Version Manager)**: Lo standard de facto. Ti permette di gestire versioni multiple ed è lo strumento suggerito dal sito stesso nella sezione macOS/Linux.
+- **NVM-Windows**: L'equivalente per il mondo Windows.
+- **Package Manager di Sistema**: Se usi **Chocolatey** su Windows o **Homebrew** su macOS, puoi installare Node.js con un singolo comando (es. `brew install node`).
+
+## 3. Node.js e Docker
+
+Il sito ufficiale ora mette in grande risalto anche l'opzione **Docker**. Questo è l'ideale se vuoi evitare di "sporcare" il tuo sistema operativo con installazioni globali:
+
+```bash
+# Scarica l'immagine ufficiale
+docker pull node:lts-alpine
+
+# Avvia un container interattivo
+docker run -it --rm node:lts-alpine sh
+```
+
+## Verificare l'installazione
+
+Una volta completata l'installazione, apri il tuo terminale (PowerShell su Windows o il Terminale su macOS/Linux) e digita:
+
+```bash
+node -v
+npm -v
+```
+
+Se vedi i numeri di versione (ad esempio `v24.x.x` e `11.x.x`), complimenti! Node.js è configurato correttamente.
+
+---
+
+## Primi Passi nel Terminale
+
+Ora che Node.js è installato, familiarizziamo con alcuni comandi di base che userai spesso durante questa guida.
+
+### Navigazione tra cartelle
+
+| Comando                                              | Descrizione                    |
+| ---------------------------------------------------- | ------------------------------ |
+| `cd nome-cartella`                                   | Entra in una cartella          |
+| `cd ..`                                              | Torna alla cartella precedente |
+| `ls` (Linux/macOS) / `dir` (Windows)                 | Mostra contenuto cartella      |
+| `pwd` (Linux/macOS) / `cd` (Windows senza argomenti) | Mostra percorso corrente       |
+
+### Creare la cartella per i progetti
+
+Ti consiglio di creare subito una cartella dedicata ai tuoi esperimenti Node.js:
+
+```bash
+# Linux/macOS
+mkdir ~/progetti-nodejs
+cd ~/progetti-nodejs
+
+# Windows (PowerShell)
+mkdir $HOME\progetti-nodejs
+cd $HOME\progetti-nodejs
+```
+
+<div class="callout tip">
+  <strong>Suggerimento:</strong> Tieni questa cartella a portata di mano. La useremo in tutti i prossimi articoli per creare e testare i nostri script.
+</div>
+
+---
+
+<div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
+  <em>Node.js è installato, ma prima di creare file veri e propri, esiste uno strumento nascosto per testare codice al volo. Nel prossimo articolo scoprirai il <strong>REPL</strong>: il tuo playground personale.</em>
+</div>

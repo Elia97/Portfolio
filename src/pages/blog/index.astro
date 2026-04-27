@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content"
+import Layout from "@/layouts/website.astro"
+import Section from "@/components/Section.astro"
+import Heading from "@/components/Heading.astro"
+import BlogGrid from "@/components/blog/BlogGrid.astro"
+import BlogSidebar from "@/components/blog/BlogSidebar.astro"
+import { getTranslations } from "@/i18n"
+import { motion } from "viewmotion"
+import HeaderEffect from "@/components/HeaderEffect.astro"
+
+const t = getTranslations("it")
+
+const posts = await getCollection("blog", ({ data }) => !data.draft)
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+---
+
+<Layout title={t("blog.meta.title")} description={t("blog.meta.description")}>
+  <HeaderEffect />
+  <Section class="lg:px-12">
+    <Heading
+      level="h1"
+      heading={t("blog.meta.title")}
+      class="my-12 2xl:my-24"
+      description={t("blog.meta.description")}
+      headingAttrs={{ ...motion({ preset: "fade-up", delay: 100 }) }}
+      descriptionAttrs={{ ...motion({ preset: "fade-up", delay: 300 }) }}
+    />
+    <div {...motion({ preset: "fade-up", delay: 500 })} class="w-full">
+      <div
+        class="xl:grid xl:grid-cols-[1fr_200px] xl:gap-16 2xl:grid-cols-[1fr_240px] 2xl:gap-20"
+      >
+        <BlogGrid posts={posts} />
+        <BlogSidebar posts={posts} />
+      </div>
+    </div>
+  </Section>
+</Layout>

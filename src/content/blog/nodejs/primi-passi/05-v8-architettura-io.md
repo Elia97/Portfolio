@@ -1,0 +1,178 @@
+---
+title: "Architettura: V8 e Modello I/O"
+description: "Le fondamenta tecniche di Node.js: come il motore V8 e il sistema I/O lo rendono incredibilmente veloce."
+pubDate: "Jan 14 2026"
+tags: ["v8", "architettura", "io", "libuv"]
+series: "primi-passi-con-nodejs"
+order: 5
+---
+
+<div class="callout note">
+  <strong>In breve:</strong> La velocità di Node.js non è magica, ma il risultato di due pilastri: il motore V8 (esecuzione) e Libuv (gestione I/O).
+</div>
+
+Per padroneggiare Node.js non basta saper scrivere codice JavaScript; bisogna capire come questo codice viene eseguito "sotto il cofano". In questo capitolo esploreremo i componenti che rendono Node.js incredibilmente performante.
+
+---
+
+## Il Motore V8: Il Cuore Pulsante
+
+Node.js non interpreta JavaScript riga per riga. Utilizza <span class="badge">V8</span>, lo stesso motore open source sviluppato da Google per Chrome.
+
+<div class="feature-list">
+  <div class="feature-item">
+    <strong>Just-In-Time (JIT)</strong>
+    V8 trasforma il codice JavaScript in codice macchina in tempo reale, permettendo prestazioni simili ai linguaggi compilati (come C++).
+  </div>
+  <div class="feature-item">
+    <strong>Garbage Collection</strong>
+    Gestisce automaticamente la memoria per te, liberando le risorse non più utilizzate senza interventi manuali.
+  </div>
+</div>
+
+<div class="callout tip">
+  <strong>Curiosità:</strong> V8 è scritto in <strong>C++</strong>. Questo significa che Node.js agisce come un "guscio" JavaScript attorno a un motore estremamente veloce scritto a basso livello.
+</div>
+
+---
+
+## Il layer Libuv: Il ponte verso l'OS
+
+Mentre V8 esegue il codice, Node.js ha bisogno di interagire con il file system, la rete e i database. V8 non sa fare queste cose nativamente. Qui entra in gioco <span class="badge">Libuv</span>, una libreria scritta in C che funge da ponte.
+
+Libuv è il componente che implementa il **Modello I/O non bloccante**, permettendo a Node.js di essere asincrono e scalabile.
+
+---
+
+## Blocking vs Non-Blocking I/O
+
+Questa è la differenza fondamentale che definisce Node.js rispetto ad altri ambienti tradizionali.
+
+### 1. Modello Blocking (Bloccante)
+
+In un modello bloccante, il programma si ferma e aspetta che l'operazione (es. lettura di un file) sia conclusa prima di passare alla riga successiva.
+
+```javascript
+import fs from "node:fs"
+
+// Il programma si ferma qui finché il file non è letto
+const data = fs.readFileSync("/file.txt")
+console.log(data)
+```
+
+### 2. Modello Non-Blocking (Non Bloccante)
+
+Node.js delega l'operazione al sistema operativo e prosegue immediatamente. Quando l'operazione è pronta, viene eseguita una **callback**.
+
+```javascript
+import fs from "node:fs"
+
+// Node.js avvia la lettura e passa subito oltre
+fs.readFile("/file.txt", (err, data) => {
+  if (err) throw err
+  console.log(data)
+})
+```
+
+<div class="callout tip">
+  <strong>Standard Moderno:</strong> Sebbene le callback siano le fondamenta, per scrivere codice leggibile ed elegante oggi si utilizzano le <strong>Promises</strong> e la sintassi <strong>async/await</strong>.
+</div>
+
+```javascript
+import fs from "node:fs/promises"
+
+try {
+  const data = await fs.readFile("/file.txt")
+  console.log(data)
+} catch (err) {
+  console.error(err)
+}
+```
+
+---
+
+## Mettiamolo alla prova: Sync vs Async
+
+È ora di vedere la differenza con i nostri occhi. Creiamo una sottocartella per questi esperimenti:
+
+```bash
+# Dalla cartella progetti-nodejs creata in precedenza
+mkdir architettura-test
+cd architettura-test
+```
+
+<div class="callout note">
+  Per ora non serve un <code>package.json</code>. Questi script semplici funzionano anche senza configurazione.
+</div>
+
+Proviamo a scrivere un file in due modi diversi per osservare il comportamento del thread principale.
+
+### Esempio Sincrono (`sync.js`)
+
+Crea il file con il tuo editor preferito oppure da terminale:
+
+```bash
+# Linux/macOS
+touch sync.js
+
+# Windows (PowerShell)
+New-Item sync.js -ItemType File
+```
+
+Node.js deve finire la scrittura prima di poter eseguire qualsiasi altra riga di codice.
+
+```javascript
+import fs from "node:fs"
+
+const text = "A\n".repeat(10 ** 6)
+fs.writeFileSync("file.txt", text, "utf8")
+console.log("Scrittura completata.")
+
+console.log("Altro codice.")
+```
+
+**Output:**
+
+```text
+Scrittura completata.
+Altro codice.
+```
+
+### Esempio Asincrono (`async.js`)
+
+Node.js avvia la scrittura "in background" e prosegue immediatamente.
+
+```javascript
+import fs from "node:fs"
+
+const text = "A\n".repeat(10 ** 6)
+fs.writeFile("file.txt", text, "utf8", (err) => {
+  if (err) throw err
+  console.log("Scrittura completata.")
+})
+
+console.log("Altro codice.")
+```
+
+**Output:**
+
+```text
+Altro codice.
+Scrittura completata.
+```
+
+<div class="callout warning">
+  <strong>Il segreto della velocità:</strong> Nell'esempio asincrono, "Altro codice" appare <strong>prima</strong>. Node.js non è rimasto con le mani in mano ad aspettare il disco!
+</div>
+
+<div class="callout tip">
+  <strong>Per i più curiosi:</strong> Anche se l'asincronia sembra "gratis", Node.js impiega un minimo di tempo extra per coordinare i thread interni di Libuv. Tuttavia, poter gestire migliaia di utenti mentre il disco lavora è il vero vantaggio competitivo.
+</div>
+
+> **Consiglio:** Abbiamo usato `10 ** 6` righe per velocità. Se vuoi "sentire" il blocco nel caso sincrono, prova ad aumentare a `10 ** 8`.
+
+---
+
+<div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
+  <em>Ora sai che V8 esegue il codice e Libuv gestisce l'I/O, ma chi coordina tutto questo senza bloccare il sistema? Nel prossimo articolo incontrerai l'<strong>Event Loop</strong>: il direttore d'orchestra di Node.js.</em>
+</div>

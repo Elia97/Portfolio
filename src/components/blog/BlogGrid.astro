@@ -1,0 +1,80 @@
+---
+import type { CollectionEntry } from "astro:content"
+import BlogCard from "./BlogCard.astro"
+import { getTranslations } from "@/i18n"
+
+interface Props {
+  posts: CollectionEntry<"blog">[]
+}
+
+const { posts } = Astro.props
+const locale = Astro.currentLocale ?? "it"
+const t = getTranslations(locale)
+
+// Raggruppa per serie, poi standalone
+const seriesMap = new Map<string, CollectionEntry<"blog">[]>()
+const standalone: CollectionEntry<"blog">[] = []
+
+for (const post of posts) {
+  if (post.data.series) {
+    const list = seriesMap.get(post.data.series) ?? []
+    list.push(post)
+    seriesMap.set(post.data.series, list)
+  } else {
+    standalone.push(post)
+  }
+}
+
+// Ordina ogni serie per order, poi per data
+for (const [key, list] of seriesMap) {
+  seriesMap.set(
+    key,
+    list.sort((a, b) =>
+      a.data.order !== undefined && b.data.order !== undefined
+        ? a.data.order - b.data.order
+        : a.data.pubDate.getTime() - b.data.pubDate.getTime()
+    )
+  )
+}
+
+standalone.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+---
+
+{
+  posts.length === 0 ? (
+    <p class="text-muted-foreground">{t("blog.ui.noPosts")}</p>
+  ) : (
+    <div class="space-y-12">
+      {[...seriesMap.entries()].map(([seriesName, seriesPosts]) => (
+        <section id={`series-${seriesName.toLowerCase().replace(/\s+/g, "-")}`}>
+          <div class="mb-6 flex items-center gap-3">
+            <span class="font-mono text-xs font-semibold tracking-widest text-primary uppercase">
+              {t("blog.ui.seriesLabel")}
+            </span>
+            <h2 class="font-mono text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
+              {seriesName}
+            </h2>
+            <span class="font-mono text-xs text-muted-foreground">
+              {seriesPosts.length} post
+            </span>
+          </div>
+          <div>
+            {seriesPosts.map((entry) => (
+              <BlogCard entry={entry} />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      {standalone.length > 0 && (
+        <section>
+          <div>
+            {standalone.map((entry) => (
+              <BlogCard entry={entry} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  )
+}

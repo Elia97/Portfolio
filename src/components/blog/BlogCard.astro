@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from "astro:content"
+import FormattedDate from "./FormattedDate.astro"
+import Badge from "@/components/Badge.astro"
+import { getTranslations } from "@/i18n"
+
+interface Props {
+  entry: CollectionEntry<"blog">
+}
+
+const { entry } = Astro.props
+const locale = Astro.currentLocale ?? "it"
+const t = getTranslations(locale)
+
+const basePath = "/blog"
+const wordCount = entry.body?.split(/\s+/).filter(Boolean).length ?? 0
+const readingTime = Math.max(1, Math.ceil(wordCount / 200))
+---
+
+<article
+  class="group flex flex-col gap-3 border-b border-border py-8 first:pt-0 last:border-0"
+>
+  <div class="flex flex-wrap items-center gap-2">
+    {
+      entry.data.series && (
+        <Badge variant="default" size="sm">
+          {entry.data.series}
+        </Badge>
+      )
+    }
+    {
+      entry.data.order !== undefined && entry.data.series && (
+        <span class="font-mono text-xs text-muted-foreground">
+          #{entry.data.order}
+        </span>
+      )
+    }
+    <span class="ml-auto font-mono text-xs text-muted-foreground">
+      {readingTime}
+      {t("blog.ui.readingTime")}
+    </span>
+  </div>
+
+  <a href={`${basePath}/${entry.id}/`} class="space-y-2">
+    <h2 class="font-bold transition-colors group-hover:text-primary sm:text-lg">
+      {entry.data.title}
+    </h2>
+    <p class="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+      {entry.data.description}
+    </p>
+  </a>
+
+  <div class="flex flex-wrap items-center gap-2">
+    <FormattedDate date={entry.data.pubDate} locale={locale} />
+    {
+      entry.data.tags.slice(0, 3).map((tag) => (
+        <Badge variant="outline" size="sm">
+          {tag}
+        </Badge>
+      ))
+    }
+  </div>
+</article>
