@@ -5,11 +5,22 @@ import { Icon } from "astro-icon/components"
 import { motion } from "viewmotion"
 import BlogLayout from "@/layouts/blog.astro"
 import Badge from "@/components/Badge.astro"
+import MdxBadge from "@/components/mdx/Badge.astro"
+import Callout from "@/components/mdx/Callout.astro"
+import FeatureItem from "@/components/mdx/FeatureItem.astro"
+import FeatureList from "@/components/mdx/FeatureList.astro"
 import FormattedDate from "@/components/blog/FormattedDate.astro"
 import TableOfContents from "@/components/blog/TableOfContents.astro"
 import SeriesNav from "@/components/blog/SeriesNav.astro"
 import SeriesSidebar from "@/components/blog/SeriesSidebar.astro"
 import { getTranslations } from "@/i18n"
+
+const mdxComponents = {
+  Badge: MdxBadge,
+  Callout,
+  FeatureItem,
+  FeatureList,
+}
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft)
@@ -52,7 +63,7 @@ const nextInSeries = seriesPosts[seriesIndex + 1]
     )
   }
 
-  <main class="mx-auto max-w-3xl px-6 py-12 sm:py-24">
+  <main class="mx-auto max-w-3xl px-6 py-12 sm:px-12 sm:py-24">
     <a
       href={getRelativeLocaleUrl("it", "/blog")}
       {...motion({ preset: "fade-down", delay: 0, once: true })}
@@ -120,7 +131,7 @@ const nextInSeries = seriesPosts[seriesIndex + 1]
         {...motion({ preset: "fade-up", delay: 200, once: true })}
         class="prose-blog"
       >
-        <Content />
+        <Content components={mdxComponents} />
       </div>
 
       {

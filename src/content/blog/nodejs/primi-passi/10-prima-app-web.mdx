@@ -1,0 +1,178 @@
+---
+title: "Il tuo primo Web Server: Hello World dal Browser"
+description: "Chiudiamo la guida pratica creando un server HTTP nativo con ES Modules. Scopri la potenza del web asincrono."
+pubDate: "May 5 2026"
+tags: ["http", "server", "web", "tutorial"]
+series: "primi-passi-con-nodejs"
+order: 10
+---
+
+Siamo arrivati alla tappa finale di questo viaggio. Abbiamo esplorato l'architettura, dominato l'asincronia e configurato NPM. Ma Node.js brilla davvero quando diventa il motore del **Web**.
+
+Invece di affidarti a server preconfigurati (come Apache o Nginx), con Node.js **scriviamo noi il codice del server**. Questa flessibilità è ciò che ha reso Node.js lo standard per le applicazioni moderne ad alte prestazioni.
+
+<Callout type="tip" label="Il Segreto della Scalabilità">
+  Grazie all'architettura <em>Non-Blocking I/O</em> che abbiamo studiato nei
+  capitoli precedenti, questo semplice server può gestire migliaia di
+  connessioni simultanee con un consumo di risorse minimo.
+</Callout>
+
+---
+
+## Il Modulo Nativo: http
+
+Node.js mette a disposizione il modulo <Badge>node:http</Badge>. Sebbene nel mondo reale useremo framework come _Express_ o _Fastify_, capire come funziona il modulo nativo è essenziale per comprendere il flusso **Richiesta/Risposta**.
+
+Ogni volta che un utente visita il tuo indirizzo, avvengono due cose:
+
+1. **Request (<Badge>req</Badge>)**: Il server riceve un oggetto contenente i dati del visitatore (URL, browser usato, dati inviati).
+2. **Response (<Badge>res</Badge>)**: Il server deve rispondere inviando uno stato (es. 200 OK) e il contenuto (HTML, JSON, immagini).
+
+---
+
+## Preparare il Progetto
+
+Creiamo l'ultima sottocartella nella nostra directory `progetti-nodejs`:
+
+```bash
+mkdir primo-server
+cd primo-server
+npm init -y
+```
+
+Ricorda di aggiungere `"type": "module"` al `package.json`. Poi crea il file del server:
+
+```bash
+# Linux/macOS
+touch server.js
+
+# Windows (PowerShell)
+New-Item server.js -ItemType File
+```
+
+---
+
+## Creazione del Server Web
+
+Apri `server.js` e utilizza la potenza degli **ES Modules** per inizializzare il tuo primo server.
+
+```javascript
+import { createServer } from "node:http"
+
+// Creiamo un'istanza del server
+const server = createServer((req, res) => {
+  // 1. Definiamo il tipo di contenuto (HTML con supporto emoji)
+  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+
+  // 2. Scriviamo il corpo della pagina
+  res.write("<h1>Benvenuto sul mio server Node.js! 🚀</h1>")
+  res.write(
+    `<p>Stai visualizzando il percorso: <strong>${req.url}</strong></p>`
+  )
+
+  // 3. Importante: segnaliamo che la risposta è terminata
+  res.end()
+})
+
+// Definiamo la porta di ascolto (3000 è lo standard per lo sviluppo)
+const PORT = 3000
+
+server.listen(PORT, () => {
+  console.log("-----------------------------------------")
+  console.log(`✅ Server attivo!`)
+  console.log(`🌐 Indirizzo: http://localhost:${PORT}`)
+  console.log("-----------------------------------------")
+})
+```
+
+---
+
+## Come testare il tuo server
+
+1. **Avvia il processo**: Nel terminale, scrivi `node server.js`.
+2. **Apri il Browser**: Vai all'indirizzo `http://localhost:3000`.
+3. **Sperimenta**: Prova a navigare su `http://localhost:3000/chi-siamo` o `http://localhost:3000/blog`. Noterai che l'app riconosce il percorso che scrivi nell'URL!
+
+---
+
+## Routing e Risposte Diverse
+
+Il server che abbiamo scritto risponde allo stesso modo per qualsiasi indirizzo. Nel mondo reale ogni percorso — o **route** — ha una risposta diversa. Node.js ci mette a disposizione `req.url` per sapere quale indirizzo è stato richiesto e `req.method` per sapere il tipo di operazione (`GET`, `POST`, `DELETE`, ecc.).
+
+```javascript
+import { createServer } from "node:http"
+
+const server = createServer((req, res) => {
+  // Route: GET / → pagina HTML
+  if (req.method === "GET" && req.url === "/") {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+    res.end("<h1>Benvenuto!</h1>")
+    return
+  }
+
+  // Route: GET /api/saluto → risposta JSON
+  if (req.method === "GET" && req.url === "/api/saluto") {
+    const dati = { messaggio: "Ciao dal server!", versione: "1.0" }
+    res.writeHead(200, { "Content-Type": "application/json" })
+    res.end(JSON.stringify(dati))
+    return
+  }
+
+  // Nessuna route trovata → 404
+  res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" })
+  res.end("Pagina non trovata")
+})
+
+server.listen(3000, () => {
+  console.log("Server attivo su http://localhost:3000")
+})
+```
+
+Visita `http://localhost:3000/api/saluto` nel browser: riceverai un oggetto JSON, non HTML. È esattamente così che si costruiscono le API.
+
+<Callout type="tip" label="I codici di stato HTTP:">
+  Il numero nel primo argomento di <code>writeHead</code> non è decorativo.
+  Browser, client API e motori di ricerca lo usano per interpretare il
+  risultato: <code>200</code> è successo, <code>404</code> è "non trovato",{" "}
+  <code>500</code> è errore del server. Usarli correttamente è la base di
+  qualsiasi API professionale.
+</Callout>
+
+<Callout type="note" label="Framework come Express e Fastify">
+  Automatizzano esattamente questo lavoro: sostituiscono il blocco if/else
+  manuale con un sistema di routing dichiarativo. Ora che sai cosa c'è sotto,
+  capirai il loro codice sin dal primo giorno.
+</Callout>
+
+---
+
+## Analisi delle Operazioni
+
+<FeatureList>
+  <FeatureItem title="createServer">
+    È una funzione di "ascolto". Non blocca il computer; resta lì, in attesa che
+    l'Event Loop riceva una connessione.
+  </FeatureItem>
+  <FeatureItem title="res.writeHead">
+    Comunichiamo al browser che tutto è andato bene (codice 200) e che tipo di
+    file stiamo inviando. Senza questo, il browser potrebbe non capire come
+    visualizzare il testo.
+  </FeatureItem>
+  <FeatureItem title="res.end()">
+    È il segnale di chiusura del pacchetto. Se lo dimentichi, il browser
+    continuerà a caricare all'infinito perché "pensa" che il server debba ancora
+    dire qualcosa.
+  </FeatureItem>
+</FeatureList>
+
+---
+
+### 🎉 Congratulazioni!
+
+Hai completato con successo il modulo **"Primi Passi con Node.js"**. Ora hai le basi solide per affrontare sfide più grandi:
+
+- Creare API REST professionali.
+- Usare database come MongoDB o PostgreSQL.
+- Sviluppare applicazioni in tempo reale con WebSockets.
+
+**Qual è il prossimo passo?** Continua a sperimentare: modifica il server per restituire JSON, aggiungi più route, o prova a gestire gli errori con un codice 404.

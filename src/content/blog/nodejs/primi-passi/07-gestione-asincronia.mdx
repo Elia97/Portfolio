@@ -1,0 +1,191 @@
+---
+title: "Gestire l'Asincronia: Callback, Promise e Async/Await"
+description: "L'evoluzione del codice asincrono in Node.js: come passare dal disordine delle callback alla pulizia di async/await."
+pubDate: "May 5 2026"
+tags: ["javascript", "asincronia", "promises", "async-await"]
+series: "primi-passi-con-nodejs"
+order: 7
+---
+
+<Callout type="note" label="Evoluzione:">
+  JavaScript è progredito enormemente nel modo in cui gestisce l'attesa. Siamo
+  passati dalle "funzioni dentro le funzioni" a una sintassi che sembra quasi
+  linguaggio naturale.
+</Callout>
+
+In Node.js, l'asincronia non è un'opzione, è lo standard. Poiché il sistema deve gestire molte operazioni contemporaneamente senza bloccare l'Event Loop, negli anni sono nati diversi strumenti per scrivere questo tipo di codice.
+
+---
+
+## 1. Le Callback: Il metodo "vecchia scuola"
+
+Una **Callback** è una funzione passata come argomento a un'altra funzione. In JavaScript questo è possibile perché le funzioni sono **cittadini di prima classe** (_First-Class Functions_): possono essere assegnate a variabili, passate come parametri e restituite da altre funzioni.
+
+```javascript
+setTimeout(() => {
+  console.log("Eseguito dopo 2 secondi")
+}, 2000)
+```
+
+### Il problema: Callback Hell
+
+Quando devi concatenare molte operazioni, il codice inizia a "scivolare" verso destra, creando una piramide illeggibile chiamata <Badge>Callback Hell</Badge>.
+
+```javascript
+// La piramide della rovina
+operazione1(() => {
+  operazione2(() => {
+    operazione3(() => {
+      // Difficile da leggere e da debuggare...
+    })
+  })
+})
+```
+
+---
+
+## 2. Le Promise: Una boccata d'aria
+
+Una <Badge>Promise</Badge> rappresenta un valore che non conosciamo ancora, ma che "promettiamo" di restituire in futuro. Una promessa può trovarsi in tre stati:
+
+<FeatureList>
+  <FeatureItem title="Pending">
+    Stato iniziale: l'operazione è ancora in corso.
+  </FeatureItem>
+  <FeatureItem title="Resolved (Fulfilled)">
+    L'operazione è terminata con successo e ha restituito un valore.
+  </FeatureItem>
+  <FeatureItem title="Rejected">
+    L'operazione è fallita e ha restituito un errore.
+  </FeatureItem>
+</FeatureList>
+
+Ecco come creiamo una promessa che controlla il risultato di una moltiplicazione:
+
+```javascript
+function ottieniProdotto(a, b) {
+  return new Promise((resolve, reject) => {
+    const prodotto = a * b
+    if (prodotto <= 50) {
+      resolve("Risultato accettabile")
+    } else {
+      reject(new Error("Il risultato è troppo alto!"))
+    }
+  })
+}
+```
+
+---
+
+## 3. Async / Await: Lo standard moderno
+
+Questa è l'evoluzione finale. `async/await` è costruito sopra le Promise, ma rende il codice lineare, come se fosse sincrono.
+
+- **async**: Trasforma una funzione normale in una che restituisce sempre una Promise.
+- **await**: Dice a JavaScript di "fermare" l'esecuzione della funzione corrente finché la promessa non viene risolta.
+
+```javascript
+async function eseguiCalcolo() {
+  try {
+    const risultato = await ottieniProdotto(5, 5)
+    console.log(risultato) // Risultato accettabile
+  } catch (error) {
+    console.error("Errore:", error.message)
+  }
+}
+```
+
+<Callout type="tip" label="Perché usarlo?">
+  È pulito, gestisce gli errori con il classico <code>try/catch</code> e rende
+  lo stack trace degli errori molto più comprensibile durante il debug.
+</Callout>
+
+---
+
+## 4. Gestire più Operazioni in Parallelo
+
+Finora abbiamo gestito operazioni una alla volta. Ma cosa succede quando hai bisogno di attendere più risultati contemporaneamente? `async/await` usato naivamente porta a un errore classico: aspettare in fila operazioni che potrebbero girare in parallelo.
+
+```javascript
+// ❌ Lento: le tre operazioni girano in sequenza
+async function lento() {
+  const utente = await fetchUtente(1) // aspetta...
+  const ordini = await fetchOrdini(1) // poi aspetta...
+  const prodotti = await fetchProdotti() // poi aspetta ancora...
+}
+```
+
+<Badge>Promise.all()</Badge> risolve questo: avvia tutte le operazioni
+contemporaneamente e aspetta che **tutte** siano completate. Se una fallisce,
+l'intera operazione viene rigettata.
+
+```javascript
+// ✅ Veloce: le tre operazioni girano in parallelo
+async function veloce() {
+  const [utente, ordini, prodotti] = await Promise.all([
+    fetchUtente(1),
+    fetchOrdini(1),
+    fetchProdotti(),
+  ])
+}
+```
+
+<Callout type="tip" label="Regola pratica:">
+  Se le operazioni sono indipendenti tra loro — non usi il risultato dell'una
+  per avviare l'altra — usa sempre <code>Promise.all()</code>. Può ridurre i
+  tempi di risposta drasticamente.
+</Callout>
+
+Esiste anche <Badge>Promise.race()</Badge>, che restituisce il risultato della prima Promise che si risolve, ignorando le altre. Il caso d'uso classico è implementare un timeout:
+
+```javascript
+const risultato = await Promise.race([
+  fetchDati("https://api.esempio.it/dati"),
+  new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Timeout!")), 5000)
+  ),
+])
+```
+
+---
+
+### Il Promise Chaining: riconoscerlo nel codice legacy
+
+Prima di `async/await`, le Promise venivano concatenate con `.then()` e `.catch()`. Non lo scriverai spesso, ma lo incontrerai in codebase esistenti ed è importante saperlo leggere.
+
+```javascript
+fetchUtente(1)
+  .then((utente) => fetchOrdini(utente.id))
+  .then((ordini) => console.log(ordini))
+  .catch((errore) => console.error(errore))
+```
+
+La versione equivalente in `async/await` è quella che hai già visto: più lineare, più facile da debuggare. Il chaining e `async/await` sono due sintassi diverse per la stessa cosa — le Promise — ed è per questo che si usano insieme senza problemi.
+
+---
+
+## Cosa scegliere oggi?
+
+<FeatureList>
+  <FeatureItem title="Callback">
+    Da usare solo se strettamente necessario (vecchie API o librerie datate).
+  </FeatureItem>
+  <FeatureItem title="Async/Await">
+    <strong>Scegli questo nel 99% dei casi.</strong> È lo standard industriale
+    attuale per scrivere codice leggibile e robusto.
+  </FeatureItem>
+  <FeatureItem title="Promise.all / race">
+    Da affiancare ad async/await ogni volta che hai operazioni indipendenti da
+    parallelizzare o un timeout da implementare.
+  </FeatureItem>
+</FeatureList>
+
+---
+
+<div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
+  <em>
+    Hai padroneggiato l'asincronia, ora manca solo un ingrediente per costruire
+    progetti veri: la gestione delle dipendenze. Nel prossimo articolo scoprirai{" "}
+    <strong>NPM</strong> e il file <code>package.json</code>.
+  </em>
+</div>

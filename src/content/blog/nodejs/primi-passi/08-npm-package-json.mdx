@@ -1,15 +1,16 @@
 ---
 title: "NPM e il cuore del progetto: package.json"
 description: "Scopri come gestire le dipendenze, automatizzare task e organizzare i tuoi progetti Node.js con NPM."
-pubDate: "Jan 14 2026"
+pubDate: "May 5 2026"
 tags: ["npm", "package-json", "dependencies"]
 series: "primi-passi-con-nodejs"
 order: 8
 ---
 
-<div class="callout note">
-  <strong>In breve:</strong> NPM è il cuore operativo di ogni progetto Node.js: gestisce dipendenze, versioni e comandi in modo standardizzato.
-</div>
+<Callout type="note" label="In breve:">
+  NPM è il cuore operativo di ogni progetto Node.js: gestisce dipendenze,
+  versioni e comandi in modo standardizzato.
+</Callout>
 
 Dopo aver capito come funziona l'asincronia, è il momento di imparare a dare una struttura professionale ai nostri progetti. Benvenuti nel mondo di **NPM (Node Package Manager)**.
 
@@ -77,14 +78,16 @@ Is this OK? (yes)
 
 Se vuoi saltare le domande e usare i valori predefiniti, puoi usare la modalità rapida <code>npm init -y</code>.
 
-<div class="callout note">
-  Nota: se usi il flag <code>-y</code>, dovrai aggiungere manualmente <code>"type": "module"</code> al tuo <code>package.json</code>.
-</div>
+<Callout type="note">
+  Nota: se usi il flag <code>-y</code>, dovrai aggiungere manualmente{" "}
+  <code>"type": "module"</code> al tuo <code>package.json</code>.
+</Callout>
 
-<div class="callout tip">
-  <strong>Perché ES Modules?</strong><br/>
-  Node.js sta completando la transizione verso gli <strong>ES Modules</strong> (<code>import/export</code>), lo standard ECMAScript che unifica JavaScript su browser e server. In questa guida adottiamo questa sintassi moderna.
-</div>
+<Callout type="tip" label="Perché ES Modules?">
+  Node.js sta completando la transizione verso gli <strong>ES Modules</strong> (
+  <code>import/export</code>), lo standard ECMAScript che unifica JavaScript su
+  browser e server. In questa guida adottiamo questa sintassi moderna.
+</Callout>
 
 ### Creare l'Entry Point
 
@@ -115,10 +118,10 @@ Apri il `package.json` e modifica la sezione `scripts`:
 }
 ```
 
-<div class="callout tip">
-  <strong>Il flag --watch</strong><br/>
-  Da Node.js 18+, il flag <code>--watch</code> riavvia automaticamente lo script quando modifichi il file. Perfetto per lo sviluppo!
-</div>
+<Callout type="tip" label="Il flag --watch">
+  Da Node.js 18+, il flag <code>--watch</code> riavvia automaticamente lo script
+  quando modifichi il file. Perfetto per lo sviluppo!
+</Callout>
 
 Ora puoi avviare il tuo progetto con:
 
@@ -133,11 +136,14 @@ npm run dev      # Esegue con auto-reload
 
 Quando installi una libreria, NPM la salva nella cartella `node_modules/` e aggiorna il `package.json`. Esistono diverse modalità:
 
-- <span class="badge">--save</span>: aggiunge a `dependencies` (default). Sono i pacchetti necessari per far girare l'app in produzione.
-- <span class="badge">--save-dev</span>: aggiunge a `devDependencies`. Sono strumenti utili solo durante lo sviluppo (es. test runner).
-- <span class="badge">--save-optional</span>: inserisce in `optionalDependencies`.
-- <span class="badge">--no-save</span>: installa senza modificare il `package.json`.
-- <span class="badge">-g</span>: installazione globale per usare il pacchetto come comando CLI ovunque nel sistema.
+- <Badge>--save</Badge>: aggiunge a `dependencies` (default). Sono i pacchetti
+  necessari per far girare l'app in produzione.
+- <Badge>--save-dev</Badge>: aggiunge a `devDependencies`. Sono strumenti utili
+  solo durante lo sviluppo (es. test runner).
+- <Badge>--save-optional</Badge>: inserisce in `optionalDependencies`.
+- <Badge>--no-save</Badge>: installa senza modificare il `package.json`.
+- <Badge>-g</Badge>: installazione globale per usare il pacchetto come comando
+  CLI ovunque nel sistema.
 
 ### Aggiornamento e Versionamento (SemVer)
 
@@ -163,19 +169,25 @@ Un progetto Node.js si poggia su due pilastri fondamentali che garantiscono ordi
 
 Il `package.json` è la carta d'identità del tuo progetto. Ecco gli attributi fondamentali che devi conoscere:
 
-- <span class="badge">name</span>: il nome del pacchetto (minuscolo, senza spazi o caratteri speciali).
-- <span class="badge">version</span>: la versione corrente del progetto.
-- <span class="badge">description</span>: una breve spiegazione del modulo.
-- <span class="badge">author</span>: il creatore del progetto (può essere una stringa o un oggetto).
-- <span class="badge">contributors</span>: lista di persone che collaborano al progetto.
-- <span class="badge">homepage</span>: l'indirizzo URL del sito ufficiale del progetto.
-- <span class="badge">repository</span>: indica dove risiede il codice sorgente (es. GitHub).
-- <span class="badge">license</span>: il tipo di licenza (es. MIT, ISC).
-- <span class="badge">main</span>: il file di ingresso dell'applicazione (solitamente `index.js`).
-- <span class="badge">dependencies</span>: le librerie fondamentali per l'esecuzione in produzione.
-- <span class="badge">devDependencies</span>: le librerie necessarie solo per lo sviluppo.
-- <span class="badge">scripts</span>: comandi personalizzati per automatizzare i task.
-- <span class="badge">keywords</span>: parole chiave per aiutare a trovare il pacchetto nel registro NPM.
+- <Badge>name</Badge>: il nome del pacchetto (minuscolo, senza spazi o caratteri
+  speciali).
+- <Badge>version</Badge>: la versione corrente del progetto.
+- <Badge>description</Badge>: una breve spiegazione del modulo.
+- <Badge>author</Badge>: il creatore del progetto (può essere una stringa o un
+  oggetto).
+- <Badge>contributors</Badge>: lista di persone che collaborano al progetto.
+- <Badge>homepage</Badge>: l'indirizzo URL del sito ufficiale del progetto.
+- <Badge>repository</Badge>: indica dove risiede il codice sorgente (es.
+  GitHub).
+- <Badge>license</Badge>: il tipo di licenza (es. MIT, ISC).
+- <Badge>main</Badge>: il file di ingresso dell'applicazione (solitamente
+  `index.js`).
+- <Badge>dependencies</Badge>: le librerie fondamentali per l'esecuzione in
+  produzione.
+- <Badge>devDependencies</Badge>: le librerie necessarie solo per lo sviluppo.
+- <Badge>scripts</Badge>: comandi personalizzati per automatizzare i task.
+- <Badge>keywords</Badge>: parole chiave per aiutare a trovare il pacchetto nel
+  registro NPM.
 
 ---
 
@@ -193,23 +205,27 @@ La sezione `scripts` è uno degli strumenti più flessibili di NPM. Ti permette 
 
 Puoi richiamare questi comandi con `npm run <nome-script>` (o semplicemente `npm start` per lo script standard).
 
-<div class="feature-list">
-  <div class="feature-item">
-    <strong>Standardizzazione</strong>
-    `npm start` e `npm test` sono standard universali: ogni hosting e collaboratore sa cosa aspettarsi.
-  </div>
-  <div class="feature-item">
-    <strong>Workflow Pulito</strong>
-    Evita di dover ricordare lunghe stringhe di comandi con decine di flag; basta un alias nel package.json.
-  </div>
-  <div class="feature-item">
-    <strong>Integrazione CI/CD</strong>
-    Gli script sono fondamentali per automatizzare i processi di test e deployment continuo.
-  </div>
-</div>
+<FeatureList>
+  <FeatureItem title="Standardizzazione">
+    `npm start` e `npm test` sono standard universali: ogni hosting e
+    collaboratore sa cosa aspettarsi.
+  </FeatureItem>
+  <FeatureItem title="Workflow Pulito">
+    Evita di dover ricordare lunghe stringhe di comandi con decine di flag;
+    basta un alias nel package.json.
+  </FeatureItem>
+  <FeatureItem title="Integrazione CI/CD">
+    Gli script sono fondamentali per automatizzare i processi di test e
+    deployment continuo.
+  </FeatureItem>
+</FeatureList>
 
 ---
 
 <div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
-  <em>Hai configurato il tuo progetto come un professionista. È ora di mettere le mani in pasta! Nel prossimo articolo costruiremo un vero <strong>convertitore di valuta</strong> interattivo da terminale.</em>
+  <em>
+    Hai configurato il tuo progetto come un professionista. È ora di mettere le
+    mani in pasta! Nel prossimo articolo costruiremo un vero{" "}
+    <strong>convertitore di valuta</strong> interattivo da terminale.
+  </em>
 </div>

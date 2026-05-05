@@ -1,0 +1,192 @@
+---
+title: "Il cuore di Node.js: L'Event Loop"
+description: "Scopri come l'Event Loop permette a Node.js di gestire migliaia di operazioni contemporaneamente pur essendo single-threaded."
+pubDate: "May 5 2026"
+tags: ["event-loop", "asincronia", "performance"]
+series: "primi-passi-con-nodejs"
+order: 6
+---
+
+<Callout type="note" label="Il segreto della scalabilità:">
+  Node.js non usa un thread per ogni utente. Usa un unico thread e un ciclo
+  infinito chiamato <strong>Event Loop</strong> per orchestrare tutto.
+</Callout>
+
+Abbiamo visto che Node.js è veloce grazie al suo modello I/O non bloccante. Ma come fa un unico filo di esecuzione (**single-thread**) a gestire migliaia di connessioni senza andare in tilt? La risposta risiede in un meccanismo chiamato <Badge>Event Loop</Badge>.
+
+---
+
+## Il Cameriere Perfetto: Un'analogia reale
+
+Immagina un ristorante con un solo cameriere (l'Event Loop) e un cuoco (il Sistema Operativo/Libuv).
+
+1. **L'Ordine**: Il cameriere prende l'ordine al Tavolo A.
+2. **Delega**: Invece di aspettare in cucina che il piatto sia pronto, consegna la comanda e corre subito al Tavolo B.
+3. **L'Evento**: Quando il piatto del Tavolo A è pronto, il cuoco suona un campanello (genera un **evento**).
+4. **Callback**: Appena il cameriere finisce di servire chi ha davanti, sente il campanello e porta il piatto al Tavolo A.
+
+Questo cameriere è instancabile perché non rimane mai con le mani in mano ad aspettare.
+
+---
+
+## Come funziona tecnicamente
+
+L'Event Loop monitora costantemente lo stato del programma muovendosi tra diverse "code" di messaggi. Ogni giro completo del ciclo è chiamato <Badge>Tick</Badge>.
+
+<FeatureList>
+  <FeatureItem title="1. Call Stack">
+    È dove vengono eseguite le funzioni "normali" (sincrone). Se una funzione è
+    qui, l'Event Loop è occupato.
+  </FeatureItem>
+  <FeatureItem title="2. Microtask Queue">
+    Una coda speciale ad altissima priorità. Qui vivono le{" "}
+    <strong>Promise</strong>. Node.js svuota sempre questa coda prima di passare
+    alla successiva.
+  </FeatureItem>
+  <FeatureItem title="3. Task Queue (Callback Queue)">
+    Qui finiscono le funzioni asincrone pronte per essere eseguite, come un{" "}
+    <code>setTimeout</code> scaduto o un'operazione su file conclusa.
+  </FeatureItem>
+</FeatureList>
+
+---
+
+## Un esempio pratico: Chi arriva primo?
+
+Anche se JavaScript esegue il codice riga per riga, l'Event Loop può cambiare l'ordine delle "apparenze". Guarda questo codice:
+
+```javascript
+console.log("1. Inizio")
+
+setTimeout(() => {
+  console.log("2. Timeout (5 secondi)")
+}, 5000)
+
+fetch("https://api.esempio.it/").then(() => {
+  console.log("3. Risposta dalla rete")
+})
+
+console.log("4. Fine")
+```
+
+### Cosa succede "sotto il cofano"?
+
+1. **Sincrono**: Stampa "1. Inizio".
+2. **Asincrono (Timer)**: Trova `setTimeout`. Delega il timer a Node.js e passa oltre.
+3. **Asincrono (Microtask)**: Trova la `fetch`. Delega la richiesta e continua.
+4. **Sincrono**: Stampa "4. Fine".
+
+Appena il Call Stack è vuoto:
+
+- La callback della fetch (Microtask) ha la priorità e viene eseguita non appena i dati tornano.
+- Il `setTimeout` (Task) viene eseguito solo allo scadere del tempo.
+
+**Output finale:**
+
+```text
+1. Inizio
+4. Fine
+3. Risposta dalla rete
+2. Timeout (5 secondi)
+```
+
+---
+
+<Callout type="warning" label="La Regola d'Oro:">
+  "Don't Block the Event Loop". Poiché c'è un solo thread, se scrivi un calcolo
+  che dura 10 secondi, il cameriere rimarrà "congelato" e il server non
+  risponderà a nessun altro utente.
+</Callout>
+
+---
+
+## Le priorità nascoste: nextTick e setImmediate
+
+Finora abbiamo detto che l'Event Loop segue l'ordine: **Call Stack → Microtask Queue → Task Queue**. Questa regola vale, ma Node.js aggiunge due strumenti che modificano le priorità e che troverai spesso nel codice reale.
+
+- <Badge>process.nextTick</Badge>: esegue la callback **prima ancora** che la
+  Microtask Queue venga processata. È il punto più prioritario dell'intero
+  sistema, specifico di Node.js.
+- <Badge>setImmediate</Badge>: esegue la callback nella **prossima iterazione**
+  dell'Event Loop, dopo che tutte le callback I/O di questo giro sono state
+  processate.
+
+```javascript
+console.log("1. Sincrono")
+
+setImmediate(() => {
+  console.log("4. setImmediate")
+})
+
+Promise.resolve().then(() => {
+  console.log("3. Promise (Microtask)")
+})
+
+process.nextTick(() => {
+  console.log("2. nextTick")
+})
+
+console.log("...ancora sincrono")
+```
+
+**Output:**
+
+```text
+1. Sincrono
+...ancora sincrono
+2. nextTick
+3. Promise (Microtask)
+4. setImmediate
+```
+
+<Callout type="tip" label="Quando usarli:">
+  <code>process.nextTick</code> garantisce che una callback venga eseguita
+  subito dopo la funzione corrente ma prima di qualsiasi I/O — utile per
+  propagare errori o emettere eventi in modo prevedibile.{" "}
+  <code>setImmediate</code> è preferibile quando vuoi cedere il controllo
+  all'Event Loop e permettergli di gestire le operazioni pendenti prima di
+  continuare.
+</Callout>
+
+---
+
+## Cosa succede se blocchi davvero il loop?
+
+La regola d'oro è chiara, ma vediamo le conseguenze concrete. Se esegui un calcolo pesante nel thread principale, ogni altra connessione deve aspettare — non importa quante siano.
+
+```javascript
+import { createServer } from "node:http"
+
+const server = createServer((req, res) => {
+  if (req.url === "/blocca") {
+    // Calcolo CPU che congela il loop per 3 secondi
+    const inizio = Date.now()
+    while (Date.now() - inizio < 3000) {}
+    res.end("Finito (ma hai bloccato tutti gli altri!)")
+  } else {
+    res.end("Risposta rapida")
+  }
+})
+
+server.listen(3000)
+```
+
+Apri due tab nel browser simultaneamente — una su `/blocca`, una su `/`. La seconda aspetterà i 3 secondi interi prima di ricevere risposta, anche se non ha nulla a che fare con il calcolo.
+
+<Callout type="warning" label="La soluzione:">
+  Per operazioni CPU intensive (parsing di file enormi, calcoli matematici,
+  elaborazione di immagini) Node.js offre i <strong>Worker Threads</strong> —
+  thread separati che non intaccano l'Event Loop principale. Sono uno strumento
+  avanzato, ma ora sai esattamente perché esistono.
+</Callout>
+
+---
+
+<div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
+  <em>
+    Hai capito come funziona l'Event Loop, ma come si scrive codice che lo
+    sfrutta al meglio? Nel prossimo articolo ripercorreremo l'evoluzione
+    dell'asincronia: dalle <strong>Callback</strong> fino al moderno{" "}
+    <strong>async/await</strong>.
+  </em>
+</div>

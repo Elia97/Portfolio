@@ -1,0 +1,321 @@
+{
+  "availableDays": 44,
+  "projects": [
+    {
+      "id": "heli",
+      "name": "Heli Experience",
+      "color": "#0891b2",
+      "stack": "stack esistente (in corso)",
+      "rate": 250,
+      "status": "doing",
+      "priority": "M",
+      "weekStart": 1,
+      "weekEnd": 1,
+      "scope": "Wrap-up del progetto in corso. Ultime integrazioni e go-live finale. Stack mantenuto = quello già impostato.",
+      "ref": "",
+      "tasks": [
+        {
+          "id": "t-rl9oyil",
+          "name": "Sezioni residue UI",
+          "days": 2,
+          "status": "doing"
+        },
+        {
+          "id": "t-26r1nte",
+          "name": "QA finale",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-0vzk7m7",
+          "name": "Handover + go-live",
+          "days": 1,
+          "status": "todo"
+        }
+      ],
+      "risks": ["Revisioni dell'ultimo minuto del cliente"]
+    },
+    {
+      "id": "smoothie",
+      "name": "Smoothie Communicate",
+      "color": "#7c3aed",
+      "stack": "Astro + Strapi (esistente)",
+      "rate": 220,
+      "status": "todo",
+      "priority": "L",
+      "weekStart": 2,
+      "weekEnd": 2,
+      "scope": "Sito dell'agenzia stessa: integrazione pagine mancanti + casi studio. Stack già in produzione.",
+      "ref": "",
+      "tasks": [
+        {
+          "id": "t-dj9ls9a",
+          "name": "Audit pagine mancanti + design check",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-5wv16ma",
+          "name": "Sviluppo pagine mancanti",
+          "days": 2,
+          "status": "todo"
+        },
+        {
+          "id": "t-lnozu6u",
+          "name": "Template case study (schema Strapi + page)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-ekqat2l",
+          "name": "Population casi studio + handover",
+          "days": 0.5,
+          "status": "todo"
+        }
+      ],
+      "risks": ["Allineamento contenuti dei case study con il team"]
+    },
+    {
+      "id": "red",
+      "name": "Red Solution",
+      "color": "#ea580c",
+      "stack": "Astro + Strapi",
+      "rate": 250,
+      "status": "todo",
+      "priority": "M",
+      "weekStart": 3,
+      "weekEnd": 4,
+      "scope": "Corporate B2B IT consulting. 6-8 pagine, lead generation oriented. Form, CTA, tracking, SEO tecnica. Reference: scponline.it",
+      "ref": "https://www.scponline.it",
+      "tasks": [
+        {
+          "id": "t-kqh3p99",
+          "name": "Setup repo Astro + Tailwind + design system",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-0ehm8yv",
+          "name": "Modello Strapi (pagine, sezioni, casi)",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-onw9ta8",
+          "name": "Homepage",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-8l92co5",
+          "name": "6 pagine interne",
+          "days": 2.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-daeyuon",
+          "name": "Form lead + Resend + thank-you page",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-rf2bqre",
+          "name": "GA4 / GTM + tracking eventi conversione",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-je77yfn",
+          "name": "SEO on-page + sitemap + structured data",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-2rwfd4k",
+          "name": "Deploy + DNS + QA finale",
+          "days": 0.5,
+          "status": "todo"
+        }
+      ],
+      "risks": ["Iterazioni copy lato cliente"]
+    },
+    {
+      "id": "atc",
+      "name": "ATC",
+      "color": "#dc2626",
+      "stack": "Astro + Strapi + Astro i18n",
+      "rate": 280,
+      "status": "todo",
+      "priority": "H",
+      "weekStart": 4,
+      "weekEnd": 7,
+      "scope": "Corporate B2B settore armiero. Restyling completo, max 10 pagine, schede prodotto, integrazione configuratore di terzi (iframe in fase 1), multilingua IT/EN. Reference: beretta.com/it-it",
+      "ref": "https://www.beretta.com/it-it",
+      "tasks": [
+        {
+          "id": "t-1riaxhq",
+          "name": "Setup repo Astro + i18n + design system",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-dnzlhfg",
+          "name": "Modello Strapi multilingua (plugin i18n)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-h887mib",
+          "name": "Homepage",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-1yacyh2",
+          "name": "5 pagine interne (about, servizi, contatti…)",
+          "days": 2,
+          "status": "todo"
+        },
+        {
+          "id": "t-jk1xx0v",
+          "name": "Schede prodotto (template + ~5 schede)",
+          "days": 2,
+          "status": "todo"
+        },
+        {
+          "id": "t-1bgn9gm",
+          "name": "Integrazione configuratore terzo (iframe + UX wrapper)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-tphruom",
+          "name": "Traduzioni IT → EN (pass contenuti)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-ezx1dx7",
+          "name": "SEO + tracking + meta hreflang",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-yewriq1",
+          "name": "QA cross-browser + responsive",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-ddopjb1",
+          "name": "Deploy + handover",
+          "days": 1,
+          "status": "todo"
+        }
+      ],
+      "risks": [
+        "Configuratore terzo: dipendenza vendor (specs, dominio, parametri)",
+        "Coerenza UX tra restyling e iframe esterno",
+        "Volume contenuti multilingua su Strapi"
+      ]
+    },
+    {
+      "id": "ita",
+      "name": "Itajourney (Luca Band)",
+      "color": "#15803d",
+      "stack": "Astro + Strapi + React islands",
+      "rate": 300,
+      "status": "todo",
+      "priority": "H",
+      "weekStart": 7,
+      "weekEnd": 9,
+      "scope": "2 mini siti (property mgmt + booking su sottodominio). Sito 1 = marketing puro Astro. Sito 2 = Astro + React islands SOLO per filtri e calendar. Integrazione TeamSystem Hospitality. Reference: airstay.ae/hosting + gardenandalo.com",
+      "ref": "https://www.gardenandalo.com",
+      "tasks": [
+        {
+          "id": "t-vo1mxy1",
+          "name": "Setup pnpm workspaces + 2 progetti Astro",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-zciqzj5",
+          "name": "Modello Strapi (immobili, foto, prezzi, disponibilità, blog)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-5iag8gd",
+          "name": "Sito 1 Property mgmt — design + 5 pagine",
+          "days": 3,
+          "status": "todo"
+        },
+        {
+          "id": "t-m2javpu",
+          "name": "Sito 1 — form acquisizione proprietari + email",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-62aksny",
+          "name": "Sito 2 Booking — listing immobili (Astro)",
+          "days": 1.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-58dk2n3",
+          "name": "Sito 2 — schede immobile dettagliate",
+          "days": 1.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-w8i1b3s",
+          "name": "Sito 2 — filtri React island (categoria, prezzo, ospiti, date)",
+          "days": 2,
+          "status": "todo"
+        },
+        {
+          "id": "t-xbuo6hr",
+          "name": "Sito 2 — calendar disponibilità React island",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-nk62tdp",
+          "name": "Integrazione TeamSystem Hospitality (auth, availability, request)",
+          "days": 3,
+          "status": "todo"
+        },
+        {
+          "id": "t-18qznvq",
+          "name": "Form richiesta disponibilità + email transazionale",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-40djaze",
+          "name": "Blog + esperienze (CMS + template)",
+          "days": 1,
+          "status": "todo"
+        },
+        {
+          "id": "t-6uxgvdc",
+          "name": "SEO doppio + GA4",
+          "days": 0.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-pdaq2gk",
+          "name": "Deploy doppio + DNS + QA",
+          "days": 1,
+          "status": "todo"
+        }
+      ],
+      "risks": [
+        "Integrazione API TeamSystem Hospitality (credenziali, doc, supporto vendor)",
+        "2 siti = doppio deploy + DNS + SEO separati",
+        "Modello dati immobili complesso (foto, prezzi stagionali, disponibilità)"
+      ]
+    }
+  ]
+}

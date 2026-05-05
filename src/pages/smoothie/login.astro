@@ -1,0 +1,121 @@
+---
+import { isAuthenticated } from "../../lib/smoothie/auth"
+
+export const prerender = false
+
+if (isAuthenticated(Astro.request)) {
+  return Astro.redirect("/smoothie/")
+}
+
+const error = Astro.url.searchParams.get("error") === "1"
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Smoothie · Accesso</title>
+    <style>
+      .smoothie-login-page {
+        position: fixed;
+        inset: 0;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #fafaf9;
+        color: #1c1917;
+        color-scheme: light;
+        overflow: auto;
+        z-index: 0;
+      }
+      .smoothie-login-page * {
+        box-sizing: border-box;
+      }
+      .smoothie-login-page .box {
+        background: #fff;
+        border: 1px solid #e7e5e4;
+        border-radius: 12px;
+        padding: 32px;
+        width: min(360px, 92vw);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      .smoothie-login-page .title {
+        margin: 0 0 4px;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .smoothie-login-page .lead {
+        margin: 0 0 20px;
+        color: #78716c;
+        font-size: 13px;
+      }
+      .smoothie-login-page label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #44403c;
+        margin-bottom: 6px;
+      }
+      .smoothie-login-page input[type="password"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e7e5e4;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 14px;
+      }
+      .smoothie-login-page input[type="password"]:focus {
+        outline: none;
+        border-color: #2563eb;
+      }
+      .smoothie-login-page button {
+        width: 100%;
+        margin-top: 14px;
+        padding: 10px 12px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .smoothie-login-page button:hover {
+        background: #1d4ed8;
+      }
+      .smoothie-login-page .err {
+        margin-top: 12px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="smoothie-login-page">
+      <form class="box" method="post" action="/smoothie/api/login/">
+        <div class="title">Smoothie dashboard</div>
+        <p class="lead">Inserisci la password per accedere.</p>
+        <label for="pw">Password</label>
+        <input
+          id="pw"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          autofocus
+        />
+        <button type="submit">Accedi</button>
+        {error && <div class="err">Password errata</div>}
+      </form>
+    </div>
+  </body>
+</html>

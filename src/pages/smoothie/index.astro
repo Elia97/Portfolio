@@ -1,0 +1,27 @@
+---
+import { isAuthenticated } from "../../lib/smoothie/auth"
+import { readState } from "../../lib/smoothie/storage"
+import Dashboard from "../../components/smoothie/Dashboard"
+import "../../components/smoothie/Dashboard.css"
+
+export const prerender = false
+
+if (!isAuthenticated(Astro.request)) {
+  return Astro.redirect("/smoothie/login/")
+}
+
+const initialState = await readState()
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Smoothie · Dashboard bimestre</title>
+  </head>
+  <body class="smoothie-body">
+    <Dashboard client:load initialState={initialState} />
+  </body>
+</html>
