@@ -103,11 +103,11 @@ export function KPICards({
         </div>
         <div className="cap-bar-track">
           <div
-            className={`cap-bar-fill${overCapacity ? "over" : ""}`}
+            className={overCapacity ? "cap-bar-fill over" : "cap-bar-fill"}
             style={{ width: `${fillWidth}%` }}
           />
         </div>
-        <div className={`cap-warning${capWarningOk ? "ok" : ""}`}>
+        <div className={capWarningOk ? "cap-warning ok" : "cap-warning"}>
           {capWarning}
         </div>
       </div>
