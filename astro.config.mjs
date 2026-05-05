@@ -6,11 +6,14 @@ import react from "@astrojs/react"
 import mdx from "@astrojs/mdx"
 import sitemap from "@astrojs/sitemap"
 import icon from "astro-icon"
+import netlify from "@astrojs/netlify"
 
 // https://astro.build/config
 export default defineConfig({
   trailingSlash: "always",
   site: "https://eliazarantonello.dev",
+  output: "static",
+  adapter: netlify(),
   vite: {
     plugins: [tailwindcss()],
     build: {

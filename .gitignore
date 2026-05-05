@@ -21,3 +21,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# smoothie dashboard runtime state (dev only)
+/smoothie-state.json
+
+# netlify
+/.netlify/
