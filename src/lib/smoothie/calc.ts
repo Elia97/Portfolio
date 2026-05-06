@@ -4,12 +4,20 @@ export function projectDays(p: Project): number {
   return p.tasks.reduce((s, t) => s + (Number(t.days) || 0), 0)
 }
 
+export function projectRemainingDays(p: Project): number {
+  return p.tasks.reduce(
+    (s, t) => s + (t.status !== "done" ? Number(t.days) || 0 : 0),
+    0
+  )
+}
+
 export function projectTotal(p: Project): number {
   return projectDays(p) * (Number(p.rate) || 0)
 }
 
 export interface DashboardTotals {
   totalDays: number
+  remainingDays: number
   totalRev: number
   avgRate: number
   totalTasks: number
@@ -20,14 +28,19 @@ export interface DashboardTotals {
 
 export function computeTotals(state: DashboardState): DashboardTotals {
   const totalDays = state.projects.reduce((s, p) => s + projectDays(p), 0)
+  const remainingDays = state.projects.reduce(
+    (s, p) => s + projectRemainingDays(p),
+    0
+  )
   const totalRev = state.projects.reduce((s, p) => s + projectTotal(p), 0)
   const avgRate = totalDays > 0 ? totalRev / totalDays : 0
   const totalTasks = state.projects.reduce((s, p) => s + p.tasks.length, 0)
-  const buffer = state.availableDays - totalDays
+  const buffer = state.availableDays - remainingDays
   const capacityPct =
-    state.availableDays > 0 ? (totalDays / state.availableDays) * 100 : 0
+    state.availableDays > 0 ? (remainingDays / state.availableDays) * 100 : 0
   return {
     totalDays,
+    remainingDays,
     totalRev,
     avgRate,
     totalTasks,
@@ -37,7 +50,7 @@ export function computeTotals(state: DashboardState): DashboardTotals {
   }
 }
 
-const WEEK_START_DATE = new Date(2026, 4, 11)
+export const WEEK_START_DATE = new Date(2026, 4, 4)
 
 export function weekDates(idx: number): string {
   const monday = new Date(WEEK_START_DATE)

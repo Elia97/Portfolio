@@ -286,6 +286,27 @@ body.smoothie-body {
   grid-template-columns: 200px repeat(9, 1fr);
   gap: 4px;
   min-width: 900px;
+  position: relative;
+}
+.smoothie-root .gantt-today {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #dc2626;
+  pointer-events: none;
+  z-index: 4;
+  border-radius: 1px;
+}
+.smoothie-root .gantt-today::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  background: #dc2626;
+  border-radius: 50%;
 }
 .smoothie-root .gantt-head {
   font-size: 11px;

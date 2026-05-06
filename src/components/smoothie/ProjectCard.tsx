@@ -1,7 +1,11 @@
 import type { DashboardStore } from "./useDashboardStore"
 import type { Project, TaskStatus } from "../../lib/smoothie/types"
 import { TASK_STATUS } from "../../lib/smoothie/types"
-import { projectDays, fmtEur } from "../../lib/smoothie/calc"
+import {
+  projectDays,
+  projectRemainingDays,
+  fmtEur,
+} from "../../lib/smoothie/calc"
 
 interface Props {
   project: Project
@@ -19,8 +23,9 @@ export function ProjectCard({ project: p, store }: Props) {
     updateRisk,
     deleteRisk,
   } = store
-  const days = projectDays(p)
-  const total = days * p.rate
+  const totalDays = projectDays(p)
+  const remainingDays = projectRemainingDays(p)
+  const total = totalDays * p.rate
 
   return (
     <div className="card" style={{ borderTopColor: p.color }}>
@@ -104,7 +109,7 @@ export function ProjectCard({ project: p, store }: Props) {
         <div className="meta-field">
           <span className="meta-lbl">Totale</span>
           <strong style={{ fontSize: 14 }}>
-            {days}gg · {fmtEur(total)}
+            {totalDays}gg · {fmtEur(total)}
           </strong>
         </div>
       </div>
@@ -131,7 +136,8 @@ export function ProjectCard({ project: p, store }: Props) {
               fontWeight: 500,
             }}
           >
-            {p.tasks.length} task · {days} gg totali
+            {p.tasks.length} task · {remainingDays} gg residui ({totalDays}{" "}
+            totali)
           </span>
         </div>
         <div className="tasks-table-wrap">
@@ -206,7 +212,7 @@ export function ProjectCard({ project: p, store }: Props) {
               ))}
               <tr className="tasks-total">
                 <td>Totale</td>
-                <td className="num">{days}</td>
+                <td className="num">{totalDays}</td>
                 <td colSpan={2}></td>
               </tr>
             </tbody>

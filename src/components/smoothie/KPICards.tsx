@@ -14,6 +14,7 @@ export function KPICards({
 }: Props) {
   const {
     totalDays,
+    remainingDays,
     totalRev,
     avgRate,
     totalTasks,
@@ -59,8 +60,10 @@ export function KPICards({
       <div className="kpis">
         <div className="kpi">
           <div className="kpi-label">Giornate stimate</div>
-          <div className="kpi-value">{fmt(totalDays)}</div>
-          <div className="kpi-sub">su {availableDays} disponibili</div>
+          <div className="kpi-value">{fmt(remainingDays)}</div>
+          <div className="kpi-sub">
+            su {availableDays} disponibili · {fmt(totalDays)} totali
+          </div>
         </div>
         <div className="kpi">
           <div className="kpi-label">Totale economico</div>
@@ -84,7 +87,8 @@ export function KPICards({
           <div>
             <strong>Capacity check</strong>
             <span style={{ fontSize: 13, color: "#44403c", marginLeft: 8 }}>
-              {fmt(totalDays)} / {availableDays} gg ({Math.round(capacityPct)}%)
+              {fmt(remainingDays)} / {availableDays} gg (
+              {Math.round(capacityPct)}%)
             </span>
           </div>
           <div className="cap-input-row">

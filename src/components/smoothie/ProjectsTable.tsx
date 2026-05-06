@@ -5,13 +5,23 @@ import {
   type ProjectStatus,
   type Priority,
 } from "../../lib/smoothie/types"
-import { projectDays, fmt, fmtEur } from "../../lib/smoothie/calc"
+import {
+  projectDays,
+  projectRemainingDays,
+  fmt,
+  fmtEur,
+} from "../../lib/smoothie/calc"
 
 const WEEKS = Array.from({ length: 9 }, (_, i) => i + 1)
 
 interface Props {
   store: DashboardStore
-  totals: { totalDays: number; totalRev: number; avgRate: number }
+  totals: {
+    totalDays: number
+    remainingDays: number
+    totalRev: number
+    avgRate: number
+  }
 }
 
 export function ProjectsTable({ store, totals }: Props) {
@@ -21,8 +31,8 @@ export function ProjectsTable({ store, totals }: Props) {
       <h2>
         Progetti — riepilogo
         <span className="hint">
-          clicca giornate, tariffa, periodo, priorità per modificare · le
-          giornate sono la somma dei task del progetto
+          clicca tariffa, periodo, priorità per modificare · le giornate
+          mostrate sono i task non ancora completati (hover per il totale)
         </span>
       </h2>
       <div className="table-wrap">
@@ -44,6 +54,7 @@ export function ProjectsTable({ store, totals }: Props) {
           <tbody>
             {state.projects.map((p) => {
               const days = projectDays(p)
+              const remaining = projectRemainingDays(p)
               return (
                 <tr key={p.id}>
                   <td>
@@ -79,9 +90,9 @@ export function ProjectsTable({ store, totals }: Props) {
                   <td className="num">
                     <span
                       className="computed"
-                      title="Somma dei task del progetto"
+                      title={`${fmt(days)} totali (${fmt(days - remaining)} completati)`}
                     >
-                      {fmt(days)}
+                      {fmt(remaining)}
                     </span>
                   </td>
                   <td className="num">
@@ -175,7 +186,9 @@ export function ProjectsTable({ store, totals }: Props) {
           <tfoot>
             <tr className="total-row">
               <td colSpan={4}>Totale</td>
-              <td className="num">{fmt(totals.totalDays)}</td>
+              <td className="num" title={`${fmt(totals.totalDays)} totali`}>
+                {fmt(totals.remainingDays)}
+              </td>
               <td className="num">{Math.round(totals.avgRate)}</td>
               <td className="num">{fmtEur(totals.totalRev)}</td>
               <td colSpan={3}></td>
