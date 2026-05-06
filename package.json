@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,astro}\"",
     "typecheck": "astro check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "smoothie:promote": "node -e \"require('fs').copyFileSync('smoothie-state.json','src/data/smoothie-defaults.json'); console.log('state \\u2192 defaults: ok')\"",
+    "smoothie:reset": "node -e \"require('fs').copyFileSync('src/data/smoothie-defaults.json','smoothie-state.json'); console.log('defaults \\u2192 state: ok')\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",

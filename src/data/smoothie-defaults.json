@@ -1,59 +1,56 @@
 {
-  "availableDays": 44,
+  "availableDays": 34,
   "projects": [
     {
       "id": "heli",
       "name": "Heli Experience",
       "color": "#0891b2",
-      "stack": "stack esistente (in corso)",
+      "stack": "Next.js 16 + Postgres",
       "rate": 250,
       "status": "doing",
       "priority": "M",
       "weekStart": 1,
-      "weekEnd": 1,
-      "scope": "Wrap-up del progetto in corso. Ultime integrazioni e go-live finale. Stack mantenuto = quello già impostato.",
-      "ref": "",
+      "weekEnd": 2,
+      "scope": "Scope residuo: pagine experience singole, listing experience, voli panoramici, giornate a tema, contatti. Go-live 10 giu con 30 experience (popolamento contenuti lato cliente). Voli + giornate a tema previste come rilascio successivo (20 giu).",
+      "ref": "https://heli-experience.vercel.app/",
       "tasks": [
         {
           "id": "t-rl9oyil",
-          "name": "Sezioni residue UI",
-          "days": 2,
+          "name": "Pagine UI + template scheda experience + popolamento 10 referenza (experience, listing, contatti, voli, giornate)",
+          "days": 4,
           "status": "doing"
         },
         {
-          "id": "t-26r1nte",
-          "name": "QA finale",
-          "days": 1,
+          "id": "t-heli-cfg",
+          "name": "Configuratore 9-step: rifinitura + validazione + persistenza locale + submit CRM",
+          "days": 2,
           "status": "todo"
         },
         {
           "id": "t-0vzk7m7",
-          "name": "Handover + go-live",
+          "name": "QA finale + handover go-live 10 giu",
           "days": 1,
           "status": "todo"
         }
       ],
-      "risks": ["Revisioni dell'ultimo minuto del cliente"]
+      "risks": [
+        "Revisioni dell'ultimo minuto del cliente",
+        "20 testi experience mancanti su 30 — popolamento dipende dal cliente"
+      ]
     },
     {
       "id": "smoothie",
       "name": "Smoothie Communicate",
       "color": "#7c3aed",
       "stack": "Astro + Strapi (esistente)",
-      "rate": 220,
+      "rate": 250,
       "status": "todo",
       "priority": "L",
-      "weekStart": 2,
-      "weekEnd": 2,
-      "scope": "Sito dell'agenzia stessa: integrazione pagine mancanti + casi studio. Stack già in produzione.",
+      "weekStart": 3,
+      "weekEnd": 3,
+      "scope": "Sito agenzia stessa: Chi siamo, Contatti, Portfolio aggiuntivo, Casi studio. Template caso studio già definito dal cliente. Primo rilascio: 7-8 casi studio.",
       "ref": "",
       "tasks": [
-        {
-          "id": "t-dj9ls9a",
-          "name": "Audit pagine mancanti + design check",
-          "days": 0.5,
-          "status": "todo"
-        },
         {
           "id": "t-5wv16ma",
           "name": "Sviluppo pagine mancanti",
@@ -64,12 +61,6 @@
           "id": "t-lnozu6u",
           "name": "Template case study (schema Strapi + page)",
           "days": 1,
-          "status": "todo"
-        },
-        {
-          "id": "t-ekqat2l",
-          "name": "Population casi studio + handover",
-          "days": 0.5,
           "status": "todo"
         }
       ],
@@ -84,8 +75,8 @@
       "status": "todo",
       "priority": "M",
       "weekStart": 3,
-      "weekEnd": 4,
-      "scope": "Corporate B2B IT consulting. 6-8 pagine, lead generation oriented. Form, CTA, tracking, SEO tecnica. Reference: scponline.it",
+      "weekEnd": 5,
+      "scope": "Corporate B2B IT consulting. 6-8 pagine, lead generation. Form standard (nome, email, azienda, telefono, messaggio) → Odoo CRM + email + Brevo per marketing automation. Italiano singola lingua. Piano keyword in lavorazione lato cliente. Go-live 20 giu. Reference: scponline.it",
       "ref": "https://www.scponline.it",
       "tasks": [
         {
@@ -114,8 +105,14 @@
         },
         {
           "id": "t-daeyuon",
-          "name": "Form lead + Resend + thank-you page",
-          "days": 1,
+          "name": "Form lead → integrazione Odoo CRM + email + thank-you page",
+          "days": 1.5,
+          "status": "todo"
+        },
+        {
+          "id": "t-red-brevo",
+          "name": "Integrazione Brevo (marketing automation)",
+          "days": 0.5,
           "status": "todo"
         },
         {
@@ -144,12 +141,12 @@
       "name": "ATC",
       "color": "#dc2626",
       "stack": "Astro + Strapi + Astro i18n",
-      "rate": 280,
+      "rate": 250,
       "status": "todo",
       "priority": "H",
-      "weekStart": 4,
-      "weekEnd": 7,
-      "scope": "Corporate B2B settore armiero. Restyling completo, max 10 pagine, schede prodotto, integrazione configuratore di terzi (iframe in fase 1), multilingua IT/EN. Reference: beretta.com/it-it",
+      "weekStart": 2,
+      "weekEnd": 6,
+      "scope": "Corporate B2B armiero. Restyling, max 10 pagine, ~15 schede prodotto, configuratore terzo (specs in arrivo, integrazione iframe in fase 1), IT+EN (traduzioni fornite dal cliente). Sito esistente senza forte storico SEO da preservare. Go-live 20 giu. Reference: beretta.com/it-it",
       "ref": "https://www.beretta.com/it-it",
       "tasks": [
         {
@@ -178,8 +175,8 @@
         },
         {
           "id": "t-jk1xx0v",
-          "name": "Schede prodotto (template + ~5 schede)",
-          "days": 2,
+          "name": "Schede prodotto (template + ~15 schede)",
+          "days": 4,
           "status": "todo"
         },
         {
@@ -214,9 +211,9 @@
         }
       ],
       "risks": [
-        "Configuratore terzo: dipendenza vendor (specs, dominio, parametri)",
-        "Coerenza UX tra restyling e iframe esterno",
-        "Volume contenuti multilingua su Strapi"
+        "Configuratore terzo: specs tecniche non ancora disponibili (fornitore terzo, call cliente in corso)",
+        "Volume schede prodotto (~15) su Strapi multilingua",
+        "Coerenza UX restyling vs iframe configuratore"
       ]
     },
     {
@@ -224,13 +221,13 @@
       "name": "Itajourney (Luca Band)",
       "color": "#15803d",
       "stack": "Astro + Strapi + React islands",
-      "rate": 300,
+      "rate": 250,
       "status": "todo",
       "priority": "H",
-      "weekStart": 7,
-      "weekEnd": 9,
-      "scope": "2 mini siti (property mgmt + booking su sottodominio). Sito 1 = marketing puro Astro. Sito 2 = Astro + React islands SOLO per filtri e calendar. Integrazione TeamSystem Hospitality. Reference: airstay.ae/hosting + gardenandalo.com",
-      "ref": "https://www.gardenandalo.com",
+      "weekStart": 2,
+      "weekEnd": 6,
+      "scope": "Sito principale = booking (immobili + filtri + calendar + form richiesta). Sottodominio = landing one-page property management (acquisizione proprietari, form lead via email). Integrazione TeamSystem Hospitality fase 1: disponibilità + richieste prenotazione (fase 2: contenuti + automazioni). 6 immobili al go-live, crescita ~1 ogni 2 mesi. Filtri standard (date, ospiti, servizi, posizione), calendario real-time, prenotazione via form. Blog: 3 articoli al lancio, IT+EN. Go-live 10 giu. Reference property mgmt: airstay.ae/hosting.",
+      "ref": "https://www.airstay.ae/hosting",
       "tasks": [
         {
           "id": "t-vo1mxy1",
@@ -246,37 +243,37 @@
         },
         {
           "id": "t-5iag8gd",
-          "name": "Sito 1 Property mgmt — design + 5 pagine",
-          "days": 3,
+          "name": "Sito property mgmt — landing one-page (form acquisizione proprietari)",
+          "days": 1,
           "status": "todo"
         },
         {
           "id": "t-m2javpu",
-          "name": "Sito 1 — form acquisizione proprietari + email",
+          "name": "Form proprietari (nome, email, località, stanze, rifiniture, msg) + email",
           "days": 1,
           "status": "todo"
         },
         {
           "id": "t-62aksny",
-          "name": "Sito 2 Booking — listing immobili (Astro)",
+          "name": "Sito booking (principale) — listing immobili (Astro)",
           "days": 1.5,
           "status": "todo"
         },
         {
           "id": "t-58dk2n3",
-          "name": "Sito 2 — schede immobile dettagliate",
+          "name": "Sito booking — schede immobile dettagliate",
           "days": 1.5,
           "status": "todo"
         },
         {
           "id": "t-w8i1b3s",
-          "name": "Sito 2 — filtri React island (categoria, prezzo, ospiti, date)",
+          "name": "Sito booking — filtri React island (date, ospiti, servizi, posizione)",
           "days": 2,
           "status": "todo"
         },
         {
           "id": "t-xbuo6hr",
-          "name": "Sito 2 — calendar disponibilità React island",
+          "name": "Sito booking — calendar disponibilità real-time React island",
           "days": 1,
           "status": "todo"
         },
@@ -294,7 +291,7 @@
         },
         {
           "id": "t-40djaze",
-          "name": "Blog + esperienze (CMS + template)",
+          "name": "Blog (3 articoli IT+EN al lancio, CMS + template)",
           "days": 1,
           "status": "todo"
         },
@@ -312,9 +309,9 @@
         }
       ],
       "risks": [
-        "Integrazione API TeamSystem Hospitality (credenziali, doc, supporto vendor)",
-        "2 siti = doppio deploy + DNS + SEO separati",
-        "Modello dati immobili complesso (foto, prezzi stagionali, disponibilità)"
+        "Integrazione API TeamSystem Hospitality (accessi e doc in arrivo lato cliente)",
+        "Modello dati immobili (foto, prezzi stagionali, disponibilità real-time)",
+        "Architettura: booking è dominio principale, property mgmt su sottodominio (inverso rispetto all'ipotesi iniziale)"
       ]
     }
   ]

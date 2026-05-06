@@ -28,7 +28,8 @@ export default function Dashboard({ initialState }: Props) {
           <div>
             <h1>Bimestre Maggio-Luglio 2026</h1>
             <p className="sub">
-              Coordinamento progetti web agenzia Smoothie · 11 mag → 10 lug 2026
+              Coordinamento progetti web agenzia Smoothie · 4 mag → 20 giu 2026
+              (go-live: 10 giu Heli/Itajourney, 20 giu ATC/Red)
             </p>
           </div>
           <div className="topbar-actions">
@@ -80,8 +81,10 @@ export default function Dashboard({ initialState }: Props) {
           <br />• <strong>Stack di default Astro + Strapi</strong> (coerente con
           Smoothie Communicate già in produzione). React solo come island Astro
           su Itajourney booking (filtri, calendar).
-          <br />• <strong>Capacity</strong>: 44 gg lavorativi nel bimestre = 9
-          settimane x 5gg - 1 festivo (2 giugno).
+          <br />• <strong>Capacity</strong>: 34 gg lavorativi (4 mag → 20 giu, 7
+          settimane − festivo 2 giu). Le tariffe (250 €/gg uniforme) sono
+          placeholder in attesa di riallineamento alla prossima call con
+          cliente.
           <br />• <strong>Rischio principale</strong>: integrazione TeamSystem
           Hospitality su Itajourney. Anticipare richiesta credenziali e doc API
           entro la settimana 1.
