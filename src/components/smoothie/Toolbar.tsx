@@ -7,6 +7,22 @@ export function Toolbar() {
     window.location.href = "/smoothie/login/"
   }
 
+  async function resetToSeed() {
+    const ok = window.confirm(
+      "Sovrascrivi lo state corrente con il seed di default?\nL'azione non è reversibile."
+    )
+    if (!ok) return
+    const res = await fetch("/smoothie/api/reset/", {
+      method: "POST",
+      credentials: "same-origin",
+    })
+    if (!res.ok) {
+      alert(`Reset fallito: HTTP ${res.status}`)
+      return
+    }
+    window.location.reload()
+  }
+
   async function exportJson() {
     const res = await fetch("/smoothie/api/state/", {
       credentials: "same-origin",
@@ -38,6 +54,9 @@ export function Toolbar() {
         style={{ marginLeft: "auto" }}
       >
         Export JSON
+      </button>
+      <button className="btn" onClick={resetToSeed}>
+        Reset al seed
       </button>
       <button className="btn" onClick={logout}>
         Esci
