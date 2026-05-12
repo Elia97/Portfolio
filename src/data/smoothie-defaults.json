@@ -10,7 +10,7 @@
       "status": "doing",
       "priority": "M",
       "weekStart": 1,
-      "weekEnd": 2,
+      "weekEnd": 6,
       "scope": "Scope residuo: pagine experience singole, listing experience, voli panoramici, giornate a tema, contatti. Go-live 10 giu con 30 experience (popolamento contenuti lato cliente). Voli + giornate a tema previste come rilascio successivo (20 giu).",
       "ref": "https://heli-experience.vercel.app/",
       "tasks": [
@@ -18,13 +18,13 @@
           "id": "t-rl9oyil",
           "name": "Pagine UI + template scheda experience + popolamento 10 referenza (experience, listing, contatti, voli, giornate)",
           "days": 4,
-          "status": "doing"
+          "status": "done"
         },
         {
           "id": "t-heli-cfg",
           "name": "Configuratore 9-step: rifinitura + validazione + persistenza locale + submit CRM",
           "days": 2,
-          "status": "todo"
+          "status": "doing"
         },
         {
           "id": "t-0vzk7m7",
@@ -76,7 +76,7 @@
       "priority": "M",
       "weekStart": 3,
       "weekEnd": 5,
-      "scope": "Corporate B2B IT consulting. 6-8 pagine, lead generation. Form standard (nome, email, azienda, telefono, messaggio) → Odoo CRM + email + Brevo per marketing automation. Italiano singola lingua. Piano keyword in lavorazione lato cliente. Go-live 20 giu. Reference: scponline.it",
+      "scope": "Corporate B2B IT consulting. 6 pagine, lead generation. Form standard (nome, email, azienda, telefono, messaggio) → Odoo CRM + email + Brevo per marketing automation. Italiano singola lingua. Piano keyword in lavorazione lato cliente. Go-live 20 giu. Reference: scponline.it",
       "ref": "https://www.scponline.it",
       "tasks": [
         {
@@ -106,7 +106,7 @@
         {
           "id": "t-daeyuon",
           "name": "Form lead → integrazione Odoo CRM + email + thank-you page",
-          "days": 1.5,
+          "days": 1,
           "status": "todo"
         },
         {
@@ -146,7 +146,7 @@
       "priority": "H",
       "weekStart": 2,
       "weekEnd": 6,
-      "scope": "Corporate B2B armiero. Restyling, max 10 pagine, ~15 schede prodotto, configuratore terzo (specs in arrivo, integrazione iframe in fase 1), IT+EN (traduzioni fornite dal cliente). Sito esistente senza forte storico SEO da preservare. Go-live 20 giu. Reference: beretta.com/it-it",
+      "scope": "Corporate B2B armiero. Restyling, 6 pagine, ~15 schede prodotto, configuratore terzo (specs in arrivo, integrazione iframe in fase 1), IT+EN (traduzioni fornite dal cliente). Sito esistente senza forte storico SEO da preservare. Go-live 20 giu. Reference: beretta.com/it-it . TUTTI I COSTI DEL CONFIGURATORE DA CONSIDERARSI EXTRA. DOBBIAMO CAPIRE COME STARE NEI 1500€ DI BGT PER L'IMPLEMENTAZIONE DI QUESTO SITO.",
       "ref": "https://www.beretta.com/it-it",
       "tasks": [
         {
@@ -169,8 +169,8 @@
         },
         {
           "id": "t-1yacyh2",
-          "name": "5 pagine interne (about, servizi, contatti…)",
-          "days": 2,
+          "name": "4 pagine interne (Prodotti, corsi, club, home military, contatti…)",
+          "days": 1.5,
           "status": "todo"
         },
         {
@@ -181,7 +181,7 @@
         },
         {
           "id": "t-1bgn9gm",
-          "name": "Integrazione configuratore terzo (iframe + UX wrapper)",
+          "name": "Integrazione configuratore terzo (iframe + UX wrapper) - DA CONSIDERARE A PARTE.",
           "days": 1,
           "status": "todo"
         },
@@ -226,7 +226,7 @@
       "priority": "H",
       "weekStart": 2,
       "weekEnd": 6,
-      "scope": "Sito principale = booking (immobili + filtri + calendar + form richiesta). Sottodominio = landing one-page property management (acquisizione proprietari, form lead via email). Integrazione TeamSystem Hospitality fase 1: disponibilità + richieste prenotazione (fase 2: contenuti + automazioni). 6 immobili al go-live, crescita ~1 ogni 2 mesi. Filtri standard (date, ospiti, servizi, posizione), calendario real-time, prenotazione via form. Blog: 3 articoli al lancio, IT+EN. Go-live 10 giu. Reference property mgmt: airstay.ae/hosting.",
+      "scope": "Sito principale = booking (immobili + filtri + calendar + form richiesta). Sottodominio = landing one-page property management (acquisizione proprietari, form lead via email). Integrazione TeamSystem Hospitality fase 1: disponibilità + richieste prenotazione (fase 2: contenuti + automazioni). 6 immobili al go-live, crescita ~1 ogni 2 mesi. Filtri standard (date, ospiti, servizi, posizione), calendario real-time, prenotazione via form. Blog: 3 articoli al lancio, IT+EN. Go-live 10 giu. Reference property mgmt: airstay.ae/hosting. VERIFICARE LA DOCUMENTAZIONE PER L'API INVIATA SE FATTIBILE O MENO, UNA VOLTA VERIFICATO CAPIRE COME INTEGRARE E RIVEDERE ROADMAP E BGT. ANCHE QUI L'IDEA SAREBBE DI STARE SU UN BGT DI 1500€ PER L'IMPLEMENTAZIONE DI TUTTO.",
       "ref": "https://www.airstay.ae/hosting",
       "tasks": [
         {
